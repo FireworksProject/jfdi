@@ -15,3 +15,6 @@
 # Emacs tags files
 TAGS
 *.tags
+
+# Vagrant state management
+.vagrant
