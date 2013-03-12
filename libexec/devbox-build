@@ -1,26 +1,97 @@
 #!/bin/bash
-# Usage: jfd system-update [--local]
-# Summary: Run a bunch of scripts to update the operating system.
-# Help: Use the --local option to install VirtualBox stuff on the local
-# development environment.  You would not want to do this on a production box.
-#
-# OPTIONS
-#   --local Install VirtualBox stuff on local dev box.
+# Usage: devbox build
+# Summary: Install dependencies and build the JFDI development virtual machine.
+# Help: This script is only meant to be run on a virtual machine, never your
+# local work station or laptop.
 
 fail () {
     echo "$@" >&2
     exit 1
 }
 
-apt-get update || fail "Unable to update package repository."
-
-apt-get dist-upgrade --fix-missing --assume-yes \
-    || fail "Unable to upgrade installed packages."
-
-# Install VirtualBox stuff if the --local flag is up.
-if [ "$1" == "--local" ]; then
-    apt-get install dkms --assume-yes \
-        || fail "Unable to install DKMS."
-    apt-get install virtualbox-guest-additions --assume-yes \
-        || fail "Unable to install VirtualBox guest additions."
+if [ "$(id -u)" == "0" ]; then
+    fail "This script must not be run by root, or by sudo."
 fi
+
+# It would be best to have a fresh base box to start with (apt-get
+# dist-upgrade, dkms, and VirtualBox Guest Additions already installed and
+# updated to the most recent versions).
+
+sudo apt-get update || fail "Unable to update package repository."
+sudo apt-get install curl --assume-yes
+
+if ! [ -d "/usr/local/rvm" ]; then
+    \curl -L# https://get.rvm.io | sudo bash -s stable
+
+    # Add the rvm users.
+    sudo useradd --create-home --shell /bin/bash developer
+    sudo usermod --append --groups rvm vagrant
+    sudo usermod --append --groups rvm developer
+
+    # Giv 'em some dot files
+    sudo cp /jfdi/dotfiles/.bashrc /home/vagrant/
+    sudo cp /jfdi/dotfiles/.bashrc /home/developer/
+
+    # Echo out the system requirements.
+    /usr/local/rvm/bin/rvm requirements
+
+    echo "Take note of the requirements listed by RVM above, and make sure 
+they are included in the packages installed by libexec/devbox-build.
+Then exit this VM, restart it, log back in, and run
+
+  /jfdi/bin/devbox build"
+    exit 0
+else
+    echo "RVM is already installed:"
+    /usr/local/rvm/bin/rvm --version
+fi
+
+echo "Installing build depenendencies..."
+
+sudo apt-get --no-install-recommends --assume-yes install \
+    bash \
+    vim \
+    tree \
+    git-core \
+    patch \
+    bzip2 \
+    build-essential \
+    openssl \
+    libreadline6 \
+    libreadline6-dev \
+    zlib1g \
+    zlib1g-dev \
+    libssl-dev \
+    libyaml-dev \
+    libsqlite3-dev \
+    sqlite3 \
+    libxml2-dev \
+    libxslt-dev \
+    autoconf \
+    libc6-dev \
+    libgdbm-dev \
+    ncurses-dev \
+    automake \
+    libtool \
+    bison \
+    subversion \
+    pkg-config \
+    libffi-dev \
+    mysql-server \
+    mysql-client
+
+# Install Ruby
+if ! [ -d "/opt/vagrant_ruby" ]; then
+    sudo rm -rf /opt/vagrant_ruby
+    echo "Removed the old vagrant_ruby."
+fi
+"rvm" install 1.9.3
+
+# Use the new Ruby
+"rvm" use 1.9.3
+
+# Install Rails
+sudo gem install rails -v 3.2.12
+
+echo
+echo "Build done."

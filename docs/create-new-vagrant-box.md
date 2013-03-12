@@ -13,8 +13,9 @@ Download the box and add it to the local file system using `vagrant box add`. Ex
 	vagrant box add precise64 http://files.vagrantup.com/precise64.box
 
 For the rest of these steps, make sure your current working directory is the
-root directory for the guest VM on your local host machine. There should be a
-Vagrantfile already present.
+root directory for the guest VM on your local host machine. When building a
+base box this should always be `virtual_machines/base/`. There should be a
+Vagrantfile already present in this base directory.
 
 Edit the vagrant file to set `config.vm.box` to the box you just added. Example:
 
@@ -52,6 +53,7 @@ and then update the system:
 
 	sudo apt-get update
 	sudo apt-get dist-upgrade
+	sudo apt-get autoremove
 
 *Important note:* If prompted to choose which disk to install grub on, choose sda.
 
@@ -89,3 +91,24 @@ And then install VBoxGuestAdditions:
 It will warn you that it could not find the Window System drivers, but that's
 OK, because we don't use them.  Then, exit the VM, shut it down, and remove the
 local VBoxGuestAdditions.iso.
+
+
+## 4) Install RVM, Ruby, and Rails
+If you're still logged into the VM, exit it and run `vagrant reload`. When it
+has rebooted, SSH back into the machine with `vagrant ssh` and make the first
+pass with the build script:
+
+	/jfdi/bin/devbox build
+
+This will install curl and RVM, then spit a list of requirements at you. You
+might want to review the required packages and make sure they are included in
+the ones that will be installed by `libexec/devbox-build`.
+
+When you're done, you'll need to log out of the VM and restart it again. When
+it boots back up, log in and run the build script again:
+
+	/jfdi/bin/devbox build
+
+This time it will install the required versions of MySQL, Ruby, and Rails in
+all the appropriate places. For MySQL, just use the password "rudy" when
+prompted.
