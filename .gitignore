@@ -19,5 +19,8 @@ TAGS
 # Vagrant state management
 .vagrant
 
+# Vagrant boxes which might end up in the repo
+*.box
+
 # ISO images which might slip in there
 *.iso
