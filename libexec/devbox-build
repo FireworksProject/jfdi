@@ -40,13 +40,22 @@ they are included in the packages installed by libexec/devbox-build.
 Then exit this VM, restart it, log back in, and run
 
   /jfdi/bin/devbox build"
+		echo
     exit 0
 else
     echo "RVM is already installed:"
     /usr/local/rvm/bin/rvm --version
 fi
 
-echo "Installing build depenendencies..."
+# Remove the old Ruby
+if [ -d "/opt/vagrant_ruby" ]; then
+    sudo rm -rf /opt/vagrant_ruby
+    echo "Removed the old vagrant_ruby."
+fi
+
+echo "
+Installing system depenendencies...
+"
 
 sudo apt-get --no-install-recommends --assume-yes install \
     bash \
@@ -76,22 +85,7 @@ sudo apt-get --no-install-recommends --assume-yes install \
     bison \
     subversion \
     pkg-config \
-    libffi-dev \
-    mysql-server \
-    mysql-client
-
-# Install Ruby
-if ! [ -d "/opt/vagrant_ruby" ]; then
-    sudo rm -rf /opt/vagrant_ruby
-    echo "Removed the old vagrant_ruby."
-fi
-"rvm" install 1.9.3
-
-# Use the new Ruby
-"rvm" use 1.9.3
-
-# Install Rails
-sudo gem install rails -v 3.2.12
+    libffi-dev
 
 echo
 echo "Build done."

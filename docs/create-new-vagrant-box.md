@@ -17,21 +17,21 @@ root directory for the guest VM on your local host machine. When building a
 base box this should always be `virtual_machines/base/`. There should be a
 Vagrantfile already present in this base directory.
 
-Edit the vagrant file to set `config.vm.box` to the box you just added. Example:
+If it has not already been done, edit the vagrant file to set `config.vm.box`
+to the box you just added. Example:
 
 	config.vm.box = "precise64"
 
-The last thing we'll need to build the box is the VirtualBox Gueset Additions. This was actually
-already downloaded when you installed VirtualBox, but we need to copy the VBoxGuestAdditions.iso
-to the VM root directory on your local machine so it is available in the `/vagrant/` shared folder
-from within the VM.
+The last thing we'll need is the VirtualBox Gueset Additions. This was actually
+already downloaded when you installed VirtualBox, but we need to copy the
+VBoxGuestAdditions.iso to the VM root directory `virtual_machines/base/` on
+your local machine so it is available in the `/vagrant/` shared folder from
+within the VM.
 
 This will allow us to mount the iso image and install VBoxGuestAdditions.
 
 * On an Ubuntu host, you can find this file at `/usr/share/virtualbox/VBoxGuestAdditions.iso`.
-* On Mac OS X hosts, you can find this file in the application bundle of
-	VirtualBox. (Right click on the VirtualBox icon in Finder and choose Show
-	Package Contents. There it is located in the Contents/MacOS folder.)
+* On Mac OS X hosts, you can find this file in the application bundle of VirtualBox `/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso`.
 * On Solaris hosts, you can find this file in the additions folder under where
 	you installed VirtualBox (normally /opt/VirtualBox).
 * On a Windows host, you can find this file in the VirtualBox installation
@@ -46,8 +46,7 @@ First you need to SSH into the VM:
 
 Once you're in, copy the VBoxGuestAdditions.iso to a new location so we don't lose it:
 
-	mkdir ~/vbox
-	cp /vagrant/VBoxGuestAdditions.iso ~/vbox/
+	cp /vagrant/VBoxGuestAdditions.iso ~/
 
 and then update the system:
 
@@ -82,18 +81,22 @@ Not to worry, we're going to fix that right now. SSH back into the VM with
 
 	cd ~
 	mkdir vbg
-	sudo mount -o loop vbox/VBoxGuestAdditions.iso vbg
+	sudo mount -o loop ~/VBoxGuestAdditions.iso ~/vbg
 
 And then install VBoxGuestAdditions:
 
-	sudo vbox/VBoxLinuxAdditions.run
+	sudo vbg/VBoxLinuxAdditions.run
 
 It will warn you that it could not find the Window System drivers, but that's
-OK, because we don't use them.  Then, exit the VM, shut it down, and remove the
-local VBoxGuestAdditions.iso.
+OK, because we don't use them.  After it's done, let's remove the iso image:
+
+	sudo umount ~/vbg
+	rm ~/VBoxGuestAdditions.iso
+
+Then, exit the VM, and shut it down.
 
 
-## 4) Install RVM, Ruby, and Rails
+## 4) Install the Development Environment (RVM)
 If you're still logged into the VM, exit it and run `vagrant reload`. When it
 has rebooted, SSH back into the machine with `vagrant ssh` and make the first
 pass with the build script:
@@ -109,6 +112,6 @@ it boots back up, log in and run the build script again:
 
 	/jfdi/bin/devbox build
 
-This time it will install the required versions of MySQL, Ruby, and Rails in
-all the appropriate places. For MySQL, just use the password "rudy" when
-prompted.
+This time it will install the system dependencies.
+
+## 5) Package the Box
