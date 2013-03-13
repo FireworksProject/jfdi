@@ -115,3 +115,9 @@ it boots back up, log in and run the build script again:
 This time it will install the system dependencies.
 
 ## 5) Package the Box
+This is pretty simple:
+
+	cd virtual_machines/base/
+	vagrant package
+
+There might be more to do here in the future, like port forwarding for example.
