@@ -24,13 +24,10 @@ if ! [ -d "/usr/local/rvm" ]; then
     \curl -L# https://get.rvm.io | sudo bash -s stable
 
     # Add the rvm users.
-    sudo useradd --create-home --shell /bin/bash developer
     sudo usermod --append --groups rvm vagrant
-    sudo usermod --append --groups rvm developer
 
     # Giv 'em some dot files
     sudo cp /jfdi/dotfiles/.bashrc /home/vagrant/
-    sudo cp /jfdi/dotfiles/.bashrc /home/developer/
 
     # Echo out the system requirements.
     /usr/local/rvm/bin/rvm requirements
@@ -86,6 +83,8 @@ sudo apt-get --no-install-recommends --assume-yes install \
     subversion \
     pkg-config \
     libffi-dev
+
+rvm install 1.9.3
 
 echo
 echo "Build done."
