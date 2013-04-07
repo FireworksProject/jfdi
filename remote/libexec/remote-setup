@@ -1,0 +1,15 @@
+#!/bin/bash
+# Usage: remote setup
+# Summary: Setup configuration. (Do not run on local machines.)
+# Help: Dotfiles, NGINX configs, etc. Remember, this script is run by root.
+
+source "$_REMOTE_UTILS"
+
+main () {
+    echo "Copy .bashrc to $homedir/"
+    cp "$_REMOTE_CONF/.bashrc" "$homedir/"
+    chown vagrant:vagrant "$homedir/.bashrc"
+    chmod 640 "$homedir/.bashrc"
+}
+
+main $@

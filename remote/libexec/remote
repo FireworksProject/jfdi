@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -e
+
+fail () {
+	echo "$@" >&2
+	exit 1
+}
+
+resolve_link() {
+  $(type -p greadlink readlink | head -1) "$1"
+}
+
+abs_dirname() {
+  local cwd="$(pwd)"
+  local path="$1"
+
+  while [ -n "$path" ]; do
+    cd "${path%/*}"
+    local name="${path##*/}"
+    path="$(resolve_link "$name" || true)"
+  done
+
+  pwd
+  cd "$cwd"
+}
+
+libexec_path="$(abs_dirname "$0")"
+export _REMOTE_ROOT="$(abs_dirname "$libexec_path")"
+export _REMOTE_CONF="$_REMOTE_ROOT/configs"
+export _REMOTE_LIB="$_REMOTE_ROOT/libexec/lib"
+export _REMOTE_UTILS="$_REMOTE_LIB/utils.sh"
+export PATH="${libexec_path}:$PATH"
+
+command="$1"
+case "$command" in
+"" | "-h" | "--help" )
+  exec remote-help
+  ;;
+* )
+  command_path="$(command -v "remote-$command" || true)"
+  if [ ! -x "$command_path" ]; then
+    echo "remote: no such command \`$command'" >&2
+    exit 1
+  fi
+
+  shift
+  exec "$command_path" "$@"
+  ;;
+esac
