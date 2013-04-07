@@ -1,7 +1,7 @@
 Create a Development Vagrant Box
 ================================
-From time to time, we'll want to update and rebuild the base Vagrant Virtual
-Machine image used for development.  Here is how that can be done:
+From time to time, we'll neet to update and rebuild the JFDI Vagrant box
+(virtual machine image) used for development.  Here is how that can be done:
 
 ### 1) Download a Base Box
 We're using Ubuntu 12.04 Precise on Digital Ocean, so that's what we'll use for
@@ -33,7 +33,7 @@ First you need to start the VM and SSH into it:
 	vagrant up
 	vagrant ssh
 
-Once you're in, mv the VBoxGuestAdditions.iso to a new location so we don't
+Once you're in, move the VBoxGuestAdditions.iso to a new location so we don't
 lose it:
 
 	mv /vagrant/VBoxGuestAdditions.iso ~/
@@ -42,8 +42,7 @@ and then update the system by running the provided script:
 
 	/vagrant/system_dependencies.sh
 
-This will install the Ubuntu system dependencies and RVM, the Ruby Version
-Manager.
+This will install the Ubuntu system dependencies.
 
 
 ### 3) Install VBox Guest Additions
@@ -82,7 +81,7 @@ Exit the VM and restart it from the local machine again using `vagrant reload`.
 Log back in with `vagrant ssh` and run the update the application dependencies by running
 the provided script:
 
-	/vagrant/bin/application_dependencies.sh
+	/vagrant/application_dependencies.sh
 
 This will install NGINX.
 

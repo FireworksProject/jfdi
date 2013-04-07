@@ -29,13 +29,13 @@ sudo apt-get --no-install-recommends --assume-yes install \
     bzip2 \
     build-essential \
     dkms \
-		libpcre3-dev \
+    libpcre3-dev \
     || fail "Unable to install system dependencies."
 
 sudo apt-get autoremove --assume-yes
 
     echo "System dependencies are have been installed.
-To install the application dependencies
+To install the application dependencies, restart the machine and run
 
-	/vagrant/application_dependencies
+	/vagrant/application_dependencies.sh
 "

@@ -1,31 +1,23 @@
 JFDI
 ====
-Just Fucking Do It.
+Just Fffing Do It.
 
 
 Getting Started
 ---------------
-This is the organized mess of technical debt we use to run our infrastructure.
-It consists of devops code as well as some general system administration stuff.
-You should find just about anything you need for setting up servers and running
-our applications here.
+This is the organized mess of technical debt where we keep our devops stuff.
 
-The idea is that this repository will be added as a Git Submodule to our
-application code repositories; like corkboard.git/, for example.
+The main use case is to provide a place for utility scripts for setting up and
+tearing down virtual machines.
 
-The main use case is to provide a place for utility scripts used to set up and
-tear down virtual machines, both for local development and production
-deployment.
-
-VirtualBox is a virtual machine hosting tool, and Vagrant is a virtual machine
-automation tool which makes working with VirtualBox a breeze.
+We use VirtualBox and Vagrant for running and managing virtual machines.
 
 
 Technology Stack
 ----------------
 The tech stack for the web development VM is designed for a Digital Ocean VPS.
 
-* Ubuntu Pricise 12.04 64bit
+* Ubuntu Precise 12.04 64bit
 
 
 Installing the Development Environment
