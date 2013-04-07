@@ -30,7 +30,14 @@ if ! [ -f "/usr/local/nginx/sbin/nginx" ]; then
 			|| fail "Could not download NGINX $NGINX_VERSION"
 
 	cd $install_dir
-	"./configure" || fail "Unable to configure NGINX"
+
+	./configure \
+        --with-http_ssl_module \
+        --with-http_flv_module \
+        --with-http_gzip_static_module \
+        --with-http_mp4_module \
+        || fail "Unable to configure NGINX"
+
 	make || fail "Unable to make NGINX"
 	sudo make install || fail "Unable to install NGINX"
 
@@ -38,6 +45,16 @@ if ! [ -f "/usr/local/nginx/sbin/nginx" ]; then
 	rm -rf $install_dir
 else
 	"/usr/local/nginx/sbin/nginx" "-v"
+fi
+
+if ! [ -f "/etc/init.d/nginx" ]; then
+    initd="/etc/init.d/nginx"
+    sudo cp "/vagrant/init_d_nginx" $initd
+    sudo chown root:root $initd
+    sudo chmod 755 $initd
+    sudo /usr/sbin/update-rc.d -f nginx defaults
+else
+    echo "NGINX init.d already installed."
 fi
 
 echo

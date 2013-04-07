@@ -29,6 +29,8 @@ sudo apt-get --no-install-recommends --assume-yes install \
     bzip2 \
     build-essential \
     dkms \
+		libssl-dev \
+		zlib1g-dev \
     libpcre3-dev \
     || fail "Unable to install system dependencies."
 

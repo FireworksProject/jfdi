@@ -78,8 +78,8 @@ Then, exit the VM.
 
 ### 4) Install Application Dependencies
 Exit the VM and restart it from the local machine again using `vagrant reload`.
-Log back in with `vagrant ssh` and run the update the application dependencies by running
-the provided script:
+Log back in with `vagrant ssh` and run the update the application dependencies
+by running the provided script:
 
 	/vagrant/application_dependencies.sh
 
