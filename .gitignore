@@ -24,3 +24,5 @@ TAGS
 
 # ISO images which might slip in there
 *.iso
+
+/webapps/*/***
