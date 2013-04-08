@@ -12,6 +12,7 @@ def info():
     rv = Info()
     rv.hostname = socket.gethostname()
     rv.homedir = "/home/vagrant"
+    rv.logdir = "/var/log/jfdi"
     rv.confdir = environ['_REMOTE_CONF']
     rv.username = 'vagrant'
     rv.groupname = 'vagrant'

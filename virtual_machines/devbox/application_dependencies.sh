@@ -47,6 +47,7 @@ else
 	"/usr/local/nginx/sbin/nginx" "-v"
 fi
 
+# init.d script for NGINX.
 if ! [ -f "/etc/init.d/nginx" ]; then
     initd="/etc/init.d/nginx"
     sudo cp "/vagrant/init_d_nginx" $initd
@@ -57,6 +58,7 @@ else
     echo "NGINX init.d already installed."
 fi
 
+# Create the log directory.
 if ! [ -d "/var/log/jfdi" ]; then
     sudo mkdir -p "/var/log/jfdi/nginx"
     sudo chown -R vagrant:vagrant "/var/log/jfdi"

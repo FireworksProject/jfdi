@@ -11,6 +11,8 @@ from lib import remote, pyutil
 def main():
     info = remote.info()
     set_bashrc(info)
+    create_log_dir(info)
+    configure_nginx(info)
     set_nginx_apps(info)
     return
 
@@ -28,7 +30,25 @@ def set_bashrc(info):
         print "  .bashrc installed."
     return
 
-def set_nginx_apps(info):
+def create_log_dir(info):
+    if path.exists(info.logdir):
+        return
+
+    # Create the jfdi logging directory.
+    pyutil.ensure_path(info.logdir)
+    chown(info.logdir, info.userid, info.groupid)
+    print "Created jfdi log directory at '%s'." % info.logdir
+
+    # NGINX log path
+    nginx_logs = path.join(info.logdir, 'nginx')
+    pyutil.ensure_path(nginx_logs)
+    chown(nginx_logs, info.userid, info.groupid)
+    print "Created nginx log directory at '%s'." % nginx_logs
+
+    return
+
+def configure_nginx(info):
+    print "Configuring NGINX ..."
     src = path.join(info.confdir, 'nginx', 'nginx.conf')
     dest = "/usr/local/nginx/conf/nginx.conf"
 
@@ -41,6 +61,10 @@ def set_nginx_apps(info):
         chmod(dest, 0644)
         print "  nginx.conf installed."
 
+    print "  Done."
+    return
+
+def set_nginx_apps(info):
     print "Installing webapps ..."
     sites_src = path.join(info.confdir, 'sites-available')
     pyutil.ensure_path("/etc/nginx/sites-available")
@@ -53,14 +77,14 @@ def set_nginx_apps(info):
         src = path.join(sites_src, fname)
         dest = path.join("/etc/nginx/sites-available", fname)
         if path.exists(dest) and pyutil.files_equal(src, dest):
-            print "Skipping site '%s'." % fname
+            print "  '%s' already installed," % fname
             continue
 
-        print "Installing site '%s'." % fname
+        print "  installing '%s'," % fname
         shutil.copy(src, dest)
         symlink(dest, path.join("/etc/nginx/sites-enabled", fname))
 
-    print "Webapps installed."
+    print "  Webapps installed."
     return
 
 if __name__ == '__main__':
