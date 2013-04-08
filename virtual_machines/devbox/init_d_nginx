@@ -12,7 +12,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/local/nginx/sbin/nginx
-PIDFILE="/var/run/$NAME.pid"
+PIDFILE="/usr/local/nginx/logs/$NAME.pid"
 NAME=nginx
 DESC=nginx
 
