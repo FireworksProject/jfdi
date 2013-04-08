@@ -1,15 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env python
 # Usage: remote setup
 # Summary: Setup configuration. (Do not run on local machines.)
 # Help: Dotfiles, NGINX configs, etc. Remember, this script is run by root.
 
-source "$_REMOTE_UTILS"
+from os import path, stat, chown, chmod
+import shutil
 
-main () {
-    echo "Copy .bashrc to $homedir/"
-    cp "$_REMOTE_CONF/.bashrc" "$homedir/"
-    chown vagrant:vagrant "$homedir/.bashrc"
-    chmod 640 "$homedir/.bashrc"
-}
+from lib import remote, pyutil
 
-main $@
+def main():
+    info = remote.info()
+    set_bashrc(info)
+
+    return
+
+def set_bashrc(info):
+    src = path.join(info.confdir, '.bashrc')
+    dest = path.join(info.homedir, '.bashrc')
+
+    if path.exists(dest) and pyutil.files_equal(src, dest):
+        print ".bashrc already installed."
+    else:
+        print "Installing .bashrc ..."
+        shutil.copy(src, dest)
+        chown(dest, info.userid, info.groupid)
+        chmod(dest, 0640)
+        print "  .bashrc installed."
+    return
+
+if __name__ == '__main__':
+    main()
