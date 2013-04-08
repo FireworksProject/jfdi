@@ -1,5 +1,6 @@
+import errno
 import sys
-from os import path
+from os import path, makedirs
 import hashlib
 import subprocess
 import shutil
@@ -30,3 +31,11 @@ def replace_dir(src, target):
         shutil.rmtree(target)
 
     shutil.copytree(src, target)
+
+def ensure_path(abspath):
+    try:
+        makedirs(abspath)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and path.isdir(abspath):
+            pass
+        else: raise

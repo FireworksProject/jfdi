@@ -57,5 +57,12 @@ else
     echo "NGINX init.d already installed."
 fi
 
+if ! [ -d "/var/log/jfdi" ]; then
+    sudo mkdir -p "/var/log/jfdi/nginx"
+    sudo chown -R vagrant:vagrant "/var/log/jfdi"
+else
+    echo "JFDI log directory already set."
+fi
+
 echo
 echo "Application dependencies installed."

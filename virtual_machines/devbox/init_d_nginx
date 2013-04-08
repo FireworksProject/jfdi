@@ -12,6 +12,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/local/nginx/sbin/nginx
+PIDFILE="/var/run/$NAME.pid"
 NAME=nginx
 DESC=nginx
 
@@ -27,13 +28,13 @@ set -e
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-        start-stop-daemon --start --quiet --pidfile /usr/local/nginx/logs/$NAME.pid \
+        start-stop-daemon --start --quiet --pidfile $PIDFILE \
                 --exec $DAEMON -- $DAEMON_OPTS
         echo "$NAME."
         ;;
   stop)
         echo -n "Stopping $DESC: "
-        start-stop-daemon --stop --quiet --pidfile /usr/local/nginx/logs/$NAME.pid \
+        start-stop-daemon --stop --quiet --pidfile $PIDFILE \
                 --exec $DAEMON
         echo "$NAME."
         ;;
@@ -41,15 +42,15 @@ case "$1" in
   restart|force-reload)
         echo -n "Restarting $DESC: "
         start-stop-daemon --stop --quiet --pidfile \
-                /usr/local/nginx/logs/$NAME.pid --exec $DAEMON
+                $PIDFILE --exec $DAEMON
         sleep 1
         start-stop-daemon --start --quiet --pidfile \
-                /usr/local/nginx/logs/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS
+                $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
         echo "$NAME."
         ;;
   reload)
       echo -n "Reloading $DESC configuration: "
-      start-stop-daemon --stop --signal HUP --quiet --pidfile /usr/local/nginx/logs/$NAME.pid \
+      start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDFILE \
           --exec $DAEMON
       echo "$NAME."
       ;;

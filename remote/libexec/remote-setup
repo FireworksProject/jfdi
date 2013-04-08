@@ -3,7 +3,7 @@
 # Summary: Setup configuration. (Do not run on local machines.)
 # Help: Dotfiles, NGINX configs, etc. Remember, this script is run by root.
 
-from os import path, stat, chown, chmod
+from os import path, stat, chown, chmod, listdir, symlink
 import shutil
 
 from lib import remote, pyutil
@@ -11,7 +11,7 @@ from lib import remote, pyutil
 def main():
     info = remote.info()
     set_bashrc(info)
-
+    set_nginx_apps(info)
     return
 
 def set_bashrc(info):
@@ -26,6 +26,41 @@ def set_bashrc(info):
         chown(dest, info.userid, info.groupid)
         chmod(dest, 0640)
         print "  .bashrc installed."
+    return
+
+def set_nginx_apps(info):
+    src = path.join(info.confdir, 'nginx', 'nginx.conf')
+    dest = "/usr/local/nginx/conf/nginx.conf"
+
+    if path.exists(dest) and pyutil.files_equal(src, dest):
+        print "nginx.conf already installed."
+    else:
+        print "Installing nginx.conf ..."
+        shutil.copy(src, dest)
+        chown(dest, 0, 0)
+        chmod(dest, 0644)
+        print "  nginx.conf installed."
+
+    print "Installing webapps ..."
+    sites_src = path.join(info.confdir, 'sites-available')
+    pyutil.ensure_path("/etc/nginx/sites-available")
+    pyutil.ensure_path("/etc/nginx/sites-enabled")
+
+    for fname in listdir(sites_src):
+        if fname[0] == '.':
+            continue
+
+        src = path.join(sites_src, fname)
+        dest = path.join("/etc/nginx/sites-available", fname)
+        if path.exists(dest) and pyutil.files_equal(src, dest):
+            print "Skipping site '%s'." % fname
+            continue
+
+        print "Installing site '%s'." % fname
+        shutil.copy(src, dest)
+        symlink(dest, path.join("/etc/nginx/sites-enabled", fname))
+
+    print "Webapps installed."
     return
 
 if __name__ == '__main__':
