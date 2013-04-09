@@ -19,19 +19,20 @@ fi
 sudo apt-get update || fail "Unable to update package repository."
 sudo apt-get dist-upgrade --assume-yes || fail "Unable to upgrade the system."
 
-sudo apt-get --no-install-recommends --assume-yes install \
-    bash \
+# curl - Utiility
+# vim - Utiility
+# tree - Utiility
+# python-software-properties - Required for latest NGINX.
+# build-essential - Required for VirtualBox
+# dkms - Required for VirtualBox
+
+sudo apt-get --assume-yes install \
     curl \
     vim \
     tree \
-    git-core \
-    patch \
-    bzip2 \
+    python-software-properties \
     build-essential \
     dkms \
-		libssl-dev \
-		zlib1g-dev \
-    libpcre3-dev \
     || fail "Unable to install system dependencies."
 
 sudo apt-get autoremove --assume-yes

@@ -3,8 +3,6 @@
 # Help: This script is only meant to be run on a virtual machine, never your
 # local work station or laptop.
 
-NGINX_VERSION="1.2.8"
-
 fail () {
 	echo "$@" >&2
 	exit 1
@@ -14,57 +12,40 @@ if [ "$(id -u)" == "0" ]; then
 	fail "This script must NOT be run by root, or by sudo."
 fi
 
-# Install NGINX
-echo "Checking for NGINX ..."
-if ! [ -f "/usr/local/nginx/sbin/nginx" ]; then
-	echo "Installing NGINX $NGINX_VERSION"
+# Get the latest NGINX.
+sudo add-apt-repository ppa:nginx/stable --yes
+sudo apt-get update
 
-	install_dir="/tmp/nginx_install"
-	mkdir $install_dir
+sudo apt-get --assume-yes install \
+    nginx \
+    php5 \
+    php5-fpm \
+    php5-common \
+    php5-dev \
+    php5-gd \
+    php5-xcache \
+    php5-mcrypt \
+    php5-pspell \
+    php5-snmp \
+    php5-xsl \
+    php5-imap \
+    php5-geoip \
+    php5-curl \
+    php5-cli \
+    || fail "Unable to install application packages."
 
-	nginxurl="http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz"
-	echo "Fetching NGINX from $nginxurl"
-
-	curl -# -L "$nginxurl" \
-			| tar xzf - -C $install_dir --strip-components=1 \
-			|| fail "Could not download NGINX $NGINX_VERSION"
-
-	cd $install_dir
-
-	./configure \
-        --with-http_ssl_module \
-        --with-http_flv_module \
-        --with-http_gzip_static_module \
-        --with-http_mp4_module \
-        || fail "Unable to configure NGINX"
-
-	make || fail "Unable to make NGINX"
-	sudo make install || fail "Unable to install NGINX"
-
-	cd "$HOME"
-	rm -rf $install_dir
-else
-	"/usr/local/nginx/sbin/nginx" "-v"
+# Create the socket directory for PHP-FPM.
+if ! [ -d /var/run/php5-fpm ]; then
+    sudo mkdir /var/run/php5-fpm
 fi
 
-# init.d script for NGINX.
-if ! [ -f "/etc/init.d/nginx" ]; then
-    initd="/etc/init.d/nginx"
-    sudo cp "/vagrant/init_d_nginx" $initd
-    sudo chown root:root $initd
-    sudo chmod 755 $initd
-    sudo /usr/sbin/update-rc.d -f nginx defaults
-else
-    echo "NGINX init.d already installed."
-fi
+# Config files for the default WWW site.
+sudo cp /vagrant/pool-d-default_nginx.conf /etc/php5/fpm/pool.d/default_nginx.conf
+sudo cp /vagrant/sites-available-default.conf /etc/nginx/sites-available/default
 
-# Create the log directory.
-if ! [ -d "/var/log/jfdi" ]; then
-    sudo mkdir -p "/var/log/jfdi/nginx"
-    sudo chown -R vagrant:vagrant "/var/log/jfdi"
-else
-    echo "JFDI log directory already set."
-fi
+# Restart the web servers.
+sudo service php5-fpm restart
+sudo service nginx restart
 
 echo
 echo "Application dependencies installed."

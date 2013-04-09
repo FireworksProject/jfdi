@@ -4,9 +4,9 @@ From time to time, we'll neet to update and rebuild the JFDI Vagrant box
 (virtual machine image) used for development.  Here is how that can be done:
 
 ### 1) Download a Base Box
-We're using Ubuntu 12.04 Precise on Digital Ocean, so that's what we'll use for
-our base box.  Download the box and add it to the local file system using
-`vagrant box add`. Example:
+We're using an Ubuntu 12.04 Precise box on Digital Ocean, so that's what we'll
+try to approximate for our base boxes.  Download the box and add it to the
+local file system using `vagrant box add`. Example:
 
 	vagrant box add precise64 http://files.vagrantup.com/precise64.box
 
@@ -83,13 +83,18 @@ by running the provided script:
 
 	/vagrant/application_dependencies.sh
 
-This will install NGINX.
+This will install NGINX and PHP.
 
 
 ### 5) Package the Box
-This is pretty simple:
+First test the web servers with:
 
-	vagrant package
+	curl -i http://localhost
+	curl -i http://localhost/info.php
+
+Then packaging the box is pretty simple:
+
+	vagrant package -o /tmp/jfdi-YYYY-MM-DD.box
 
 Run that command from within the `virtual_machines/devbox/` directory.
 When it's done packaging the box, upload it to Amazon S3.
