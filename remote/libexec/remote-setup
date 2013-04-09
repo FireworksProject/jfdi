@@ -11,9 +11,10 @@ from lib import remote, pyutil
 def main():
     info = remote.info()
     set_bashrc(info)
-    create_log_dir(info)
     configure_nginx(info)
-    set_nginx_apps(info)
+    set_www_apps(info)
+    print ''
+    print 'All done.'
     return
 
 def set_bashrc(info):
@@ -30,30 +31,13 @@ def set_bashrc(info):
         print "  .bashrc installed."
     return
 
-def create_log_dir(info):
-    if path.exists(info.logdir):
-        return
-
-    # Create the jfdi logging directory.
-    pyutil.ensure_path(info.logdir)
-    chown(info.logdir, info.userid, info.groupid)
-    print "Created jfdi log directory at '%s'." % info.logdir
-
-    # NGINX log path
-    nginx_logs = path.join(info.logdir, 'nginx')
-    pyutil.ensure_path(nginx_logs)
-    chown(nginx_logs, info.userid, info.groupid)
-    print "Created nginx log directory at '%s'." % nginx_logs
-
-    return
-
 def configure_nginx(info):
     print "Configuring NGINX ..."
     src = path.join(info.confdir, 'nginx', 'nginx.conf')
-    dest = "/usr/local/nginx/conf/nginx.conf"
+    dest = "/etc/nginx/nginx.conf"
 
     if path.exists(dest) and pyutil.files_equal(src, dest):
-        print "nginx.conf already installed."
+        print "  nginx.conf already installed."
     else:
         print "Installing nginx.conf ..."
         shutil.copy(src, dest)
@@ -61,14 +45,11 @@ def configure_nginx(info):
         chmod(dest, 0644)
         print "  nginx.conf installed."
 
-    print "  Done."
     return
 
-def set_nginx_apps(info):
+def set_www_apps(info):
     print "Installing webapps ..."
     sites_src = path.join(info.confdir, 'sites-available')
-    pyutil.ensure_path("/etc/nginx/sites-available")
-    pyutil.ensure_path("/etc/nginx/sites-enabled")
 
     for fname in listdir(sites_src):
         if fname[0] == '.':
@@ -76,13 +57,26 @@ def set_nginx_apps(info):
 
         src = path.join(sites_src, fname)
         dest = path.join("/etc/nginx/sites-available", fname)
-        if path.exists(dest) and pyutil.files_equal(src, dest):
-            print "  '%s' already installed," % fname
+
+        if not path.exists(dest) or not pyutil.files_equal(src, dest):
+            print "  installing vhost for '%s'," % fname
+            shutil.copy(src, dest)
+            chown(dest, 0, 0)
+            chmod(dest, 0644)
+            dest_link = path.join("/etc/nginx/sites-enabled", fname)
+            if not path.exists(dest_link):
+                symlink(dest, dest_link)
+
+        fpm_src = path.join(info.confdir, 'fpm-pools', "%s.conf" % fname)
+        fpm_dest = "/etc/php5/fpm/pool.d/%s.conf" % fname
+        if not path.exists(fpm_src):
             continue
 
-        print "  installing '%s'," % fname
-        shutil.copy(src, dest)
-        symlink(dest, path.join("/etc/nginx/sites-enabled", fname))
+        if not path.exists(fpm_dest) or not pyutil.files_equal(fpm_src, fpm_dest):
+            print "  installing FPM pool for '%s'," % fname
+            shutil.copy(fpm_src, fpm_dest)
+            chown(dest, 0, 0)
+            chmod(dest, 0644)
 
     print "  Webapps installed."
     return
