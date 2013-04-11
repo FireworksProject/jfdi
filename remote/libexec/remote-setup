@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # Usage: remote setup
-# Summary: Setup configuration. (Do not run on local machines.)
+# Summary: Setup configuration. (Requires sudo privileges.)
 # Help: Dotfiles, NGINX configs, etc. Remember, this script is run by root.
 
-from os import path, stat, chown, chmod, listdir, symlink
+from os import path, stat, chown, chmod, listdir, symlink, remove
 import shutil
 
 from lib import remote, pyutil
@@ -51,6 +51,12 @@ def set_www_apps(info):
     print "Installing webapps ..."
     sites_src = path.join(info.confdir, 'sites-available')
 
+    # Remove the default vhost.
+    remove("/etc/nginx/sites-enabled/default")
+
+    # We check the 'remote/configs/sites-available' directory to look for web
+    # apps to install.  Each one will be installed, using the name of the file
+    # found in 'remote/configs/sites-available' as the application name.
     for fname in listdir(sites_src):
         if fname[0] == '.':
             continue
@@ -58,6 +64,7 @@ def set_www_apps(info):
         src = path.join(sites_src, fname)
         dest = path.join("/etc/nginx/sites-available", fname)
 
+        # Install vhost configs on NGINX.
         if not path.exists(dest) or not pyutil.files_equal(src, dest):
             print "  installing vhost for '%s'," % fname
             shutil.copy(src, dest)
@@ -67,6 +74,7 @@ def set_www_apps(info):
             if not path.exists(dest_link):
                 symlink(dest, dest_link)
 
+        # Install the PHP-FPM pool if it exists for this app.
         fpm_src = path.join(info.confdir, 'fpm-pools', "%s.conf" % fname)
         fpm_dest = "/etc/php5/fpm/pool.d/%s.conf" % fname
         if not path.exists(fpm_src):

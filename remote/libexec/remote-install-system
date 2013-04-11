@@ -1,0 +1,64 @@
+#!/bin/bash
+# Usage: remote install-system
+# Summary: Install dependencies and build the production virtual machine.
+# Help: This script is only meant to be run on a virtual machine, never your
+# local workstation or laptop.
+
+source $_REMOTE_UTILS
+
+no_super_user "for install-system script."
+
+###
+# Update Ubuntu
+###
+
+sudo apt-get update || fail "Unable to update package repository."
+sudo apt-get dist-upgrade --assume-yes || fail "Unable to upgrade the system."
+
+# curl - Utiility
+# vim - Utiility
+# tree - Utiility
+# build-essential - Required for VirtualBox
+# dkms - Required for VirtualBox
+# python-software-properties - Required for latest NGINX.
+
+sudo apt-get --assume-yes install \
+    curl \
+    vim \
+    tree \
+    python-software-properties \
+    || fail "Unable to install system dependencies."
+
+sudo apt-get autoremove --assume-yes
+
+# Get the latest NGINX.
+sudo add-apt-repository ppa:nginx/stable --yes \
+    || fail "Unable to add the latest nginx repository."
+
+sudo apt-get update || fail "Unable to update package repository."
+
+sudo apt-get --assume-yes install \
+    nginx \
+    php5 \
+    php5-fpm \
+    php5-common \
+    php5-dev \
+    php5-gd \
+    php5-xcache \
+    php5-mcrypt \
+    php5-pspell \
+    php5-snmp \
+    php5-xsl \
+    php5-imap \
+    php5-geoip \
+    php5-curl \
+    php5-cli \
+    || fail "Unable to install application packages."
+
+# Create the socket directory for PHP-FPM.
+if ! [ -d /var/run/php5-fpm ]; then
+    sudo mkdir /var/run/php5-fpm
+fi
+
+echo "System dependencies are have been installed."
+echo "Reboot the machine 'sudo shutdown -r now' to complete."

@@ -26,9 +26,12 @@ following lines:
 	PermitRootLogin no
 	AllowUsers vagrant git
 
-Then exit and restart the machine. If you screwed something up (like forgetting
-to add sudo privilages to vagrant user) then `PermitRootLogin no` is going to
-lock you out of the machine.
+Then exit and restart the machine with:
+
+	shutdown -r now
+
+If you screwed something up (like forgetting to add sudo privilages to vagrant
+user) then `PermitRootLogin no` is going to lock you out of the machine.
 
 Back on your workstation, you can upload your key like this:
 
@@ -36,3 +39,21 @@ Back on your workstation, you can upload your key like this:
 	ssh-copy-id -i ~/.ssh/id_rsa git@@massive-b.fwp-dyn.com
 
 NOTE: ssh-copy-id is not available on Mac OS X.
+
+
+### 3) Install System Dependencies
+
+First, deploy the toehold scripts to the remote box from this repository on
+your local workstation.
+
+	bin/jfd deploy-toehold massive-b.fwp-dyn.com
+
+Then ssh into the remote `ssh vagrant@massive-b.fwp-dyn.com` and run the
+install-system script on the remote.
+
+	/home/users/vagrant/remote/bin/remote install-system
+
+Once that is done installing, reboot the machine `sudo shutdown -r now`, and
+then ssh back in and run the setup script.
+
+	sudo /home/users/vagrant/remote/bin/remote setup

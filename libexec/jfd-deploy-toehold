@@ -1,0 +1,42 @@
+#!/bin/bash
+# Usage: jfd deploy-toehold <domain_name>
+# Summary: Deploy the toehold scripts to a remote box.
+# Help: The <domain_name> will probably be 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
+
+source "$_JFD_LIB/utils.sh"
+
+rsync_opts="\
+--recursive \
+--compress \
+--links \
+--perms \
+--times \
+--omit-dir-times \
+--owner \
+--group \
+--progress \
+--human-readable \
+--exclude=*.swp \
+--exclude=*.pyc \
+--exclude=*.tmproj \
+--exclude=.DS_Store \
+--exclude=._* \
+--exclude=._*/ \
+--exclude=TAGS \
+--exclude=*.tags \
+"
+
+main () {
+    local domain_name="$1"
+
+		if [ -z $domain_name ]; then
+			fail "The <domain_name> argument is required."
+		fi
+
+		local src="$_JFD_ROOT/remote"
+		local dest="vagrant@$domain_name:~/remote"
+
+    rsync $rsync_opts "$src/" "$dest/"
+}
+
+main $@
