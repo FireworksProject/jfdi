@@ -60,5 +60,5 @@ if ! [ -d /var/run/php5-fpm ]; then
     sudo mkdir /var/run/php5-fpm
 fi
 
-echo "System dependencies are have been installed."
+echo "System dependencies have been installed."
 echo "Reboot the machine 'sudo shutdown -r now' to complete."

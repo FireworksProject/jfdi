@@ -5,12 +5,11 @@ Just Fffing Do It.
 
 Getting Started
 ---------------
-This is the organized mess of technical debt where we keep our devops stuff.
-
-The main use case is to provide a place for utility scripts for setting up and
-tearing down virtual machines.
-
-We use VirtualBox and Vagrant for running and managing virtual machines.
+This is the organized mess of devops code used by the [Fireworks
+Project](http://www.fireworksproject.com).  Most of the scripts in this
+repository are used for building virtual machines locally for development, and
+remotely for staging and production. Application deployment scripts, log
+analysis, and database tools are also available here.
 
 
 Technology Stack
@@ -18,6 +17,9 @@ Technology Stack
 The tech stack for the web development VM is designed for a Digital Ocean VPS.
 
 * Ubuntu Precise 12.04 64bit
+* Nginx 1.2.7
+* PHP 5 and FPM
+* Node.js 0.10.4
 
 
 Installing the Development Environment
@@ -46,6 +48,20 @@ You can fix this pretty simply by creating a sym link to a directory which is
 on your path like this:
 
 	sudo ln -s /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
+
+
+Updating the Development Machine
+--------------------------------
+From time to time we need to rebuild our base boxes to reflect the latest
+software and OS updates. To do that, check out the docs available in
+`docs/create-devbox.md`.
+
+
+Updating the Remote Machine
+---------------------------
+Of course, just updating the development machine is not enough, we need to keep
+the production machines up to date as well. To do that, check out the docs available in
+`docs/create-remotebox.md`.
 
 
 Copyright and License

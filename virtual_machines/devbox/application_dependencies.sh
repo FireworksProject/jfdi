@@ -3,6 +3,8 @@
 # Help: This script is only meant to be run on a virtual machine, never your
 # local work station or laptop.
 
+NODE_VERSION="v0.10.4"
+
 fail () {
 	echo "$@" >&2
 	exit 1
@@ -33,6 +35,32 @@ sudo apt-get --assume-yes install \
     php5-curl \
     php5-cli \
     || fail "Unable to install application packages."
+
+# Install Node.js
+echo "Checking for Node.js ..."
+if [ "$( node --version )" != "$NODE_VERSION" ]; then
+	echo "Installing Node.js $NODE_VERSION"
+
+	nodeurl="http://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION.tar.gz"
+	echo "Fetching Node.js from $nodeurl"
+
+	mkdir "/tmp/node_install"
+
+	curl -# -L "$nodeurl" \
+			| tar xzf - -C "/tmp/node_install" --strip-components=1 \
+			|| fail "Could not download Node.js $NODE_VERSION"
+
+	cd "/tmp/node_install"
+	"./configure" || fail "Unable to configure Node.js"
+	make || fail "Unable to make Node.js"
+	sudo make install || fail "Unable to install Node.js"
+
+	cd "$HOME"
+	rm -rf "/tmp/node_install"
+	echo "Node.js $NODE_VERSION installed."
+else
+	echo "Node.js $( node --version ) already installed."
+fi
 
 # Create the socket directory for PHP-FPM.
 if ! [ -d /var/run/php5-fpm ]; then
