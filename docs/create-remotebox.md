@@ -49,7 +49,7 @@ your local workstation.
 	bin/jfd deploy-toehold massive-b.fwp-dyn.com
 
 Then ssh into the remote `ssh vagrant@massive-b.fwp-dyn.com` and run the
-install-system script on the remote.
+install-system script on the remote (you'll need the vagrant password so you can sudo).
 
 	/home/users/vagrant/remote/bin/remote install-system
 

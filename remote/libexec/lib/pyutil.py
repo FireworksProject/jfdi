@@ -38,4 +38,4 @@ def ensure_path(abspath):
     except OSError as exc:
         if exc.errno == errno.EEXIST and path.isdir(abspath):
             pass
-        else: raise
+        else: raise exc

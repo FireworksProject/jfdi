@@ -18,9 +18,9 @@ super_or_fail () {
 
 no_super_user () {
     local msg="$1"
-		if [ super_user ]; then
-			fail "Super user priv forbidden $msg"
-		fi
+    if [ "$(id -u)" == "0" ]; then
+        fail "Super user priv forbidden $msg"
+    fi
 }
 
 ensure_dir () {

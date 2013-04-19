@@ -51,8 +51,15 @@ def set_www_apps(info):
     print "Installing webapps ..."
     sites_src = path.join(info.confdir, 'sites-available')
 
+    # Make sure the /webapps directory exists with the right permissions.
+    webapp_dir = '/webapps'
+    pyutil.ensure_path(webapp_dir)
+    chown(webapp_dir, info.userid, info.groupid)
+    chmod(webapp_dir, 0755)
+
     # Remove the default vhost.
-    remove("/etc/nginx/sites-enabled/default")
+    default_app = "/etc/nginx/sites-enabled/default"
+    if path.exists(default_app): remove(default_app)
 
     # We check the 'remote/configs/sites-available' directory to look for web
     # apps to install.  Each one will be installed, using the name of the file
