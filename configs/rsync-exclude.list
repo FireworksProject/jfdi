@@ -1,0 +1,8 @@
+*.swp
+*.pyc
+*.tmproj
+.DS_Store
+._*
+._*/
+TAGS
+*.tags

@@ -21,3 +21,22 @@ ensure_dir () {
         mkdir -p -- "$1" || fail "couldn't create $1"
     fi
 }
+
+remote_sync () {
+    local src=$1
+    local dest=$2
+
+    local rsync_opts="\
+    --recursive \
+    --compress \
+    --links \
+    --perms \
+    --times \
+    --omit-dir-times \
+    --progress \
+    --human-readable \
+    --exclude-from=$_JFD_ROOT/configs/rsync-exclude.list
+    "
+
+    rsync $rsync_opts "$src" "$dest"
+}
