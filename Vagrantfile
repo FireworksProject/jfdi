@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "http://domain.com/path/to/above.box"
-  config.vm.box_url = "https://s3.amazonaws.com/vmboxes/jfdi-2013-04-06.box"
+  config.vm.box_url = "https://s3.amazonaws.com/vmboxes/jfdi-2013-04-18.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
