@@ -1,5 +1,5 @@
 server {
-    server_name     pinfinity.co www.pinfinity.co localhost;
+    server_name     pinfinity.co www.pinfinity.co pinfinity_co.dev;
     root            /webapps/pinfinity_co;
     index           index.php;
 

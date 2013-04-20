@@ -50,15 +50,39 @@ on your path like this:
 	sudo ln -s /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
 
 
-Updating the Development Machine
---------------------------------
+### Development Hosts
+Since we run multiple virtual hosts on the JFDI server, we use special
+development host names so that each application can be reached via unique host
+names. To take advantage of this, you'll need to edit your `/etc/hosts` file to
+add an entry for each app. This is a sample:
+
+	127.0.0.1	localhost
+	127.0.0.1	pinfinity_co.dev
+	127.0.1.1	backoff
+
+
+Updating Configurations
+-----------------------
+Any time there is a change made to the system or application configurations in
+`remote/configs/` the changes will need to be deployed to the local development
+VM as well as the remote servers. To do this on the local VM, simply restart it
+with `vagrant reload`. On the remote machines, you'll need to login and then
+run
+
+	remote setup
+	sudo service php5-fpm restart
+	sudo service nginx restart
+
+
+Updating the Development Base Box
+---------------------------------
 From time to time we need to rebuild our base boxes to reflect the latest
 software and OS updates. To do that, check out the docs available in
 `docs/create-devbox.md`.
 
 
-Updating the Remote Machine
----------------------------
+Updating the Remote System
+--------------------------
 Of course, just updating the development machine is not enough, we need to keep
 the production machines up to date as well. To do that, check out the docs available in
 `docs/create-remotebox.md`.
