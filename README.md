@@ -5,11 +5,11 @@ Just Fffing Do It.
 
 Getting Started
 ---------------
-This is the organized mess of devops code used by the [Fireworks
-Project](http://www.fireworksproject.com).  Most of the scripts in this
-repository are used for building virtual machines locally for development, and
-remotely for staging and production. Application deployment scripts, log
-analysis, and database tools are also available here.
+This is the organized mess of devops code used by the
+[Fireworks Project](http://www.fireworksproject.com).
+Most of the scripts in this repository are used for building virtual machines
+locally for development, and remotely for staging and production. Application
+deployment scripts, log analysis, and database tools are also available here.
 
 
 Technology Stack
