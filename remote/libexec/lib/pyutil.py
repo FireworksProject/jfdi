@@ -15,6 +15,10 @@ def sub_or_exit(cmd, errmsg):
 def shell(cmd):
     return subprocess.call(cmd, shell=True)
 
+def capture_shell(cmd):
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+    return proc.stdout.read()
+
 def exit(msg):
     sys.exit(textwrap.dedent(msg))
 

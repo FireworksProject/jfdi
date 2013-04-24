@@ -11,6 +11,9 @@ class Info:
 def info():
     rv = Info()
     rv.hostname = socket.gethostname()
+
+    rv.public_address = pyutil.capture_shell('hostname -I')
+
     rv.homedir = "/home/vagrant"
     rv.logdir = "/var/log/jfdi"
     rv.confdir = environ['_REMOTE_CONF']
