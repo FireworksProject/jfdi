@@ -7,7 +7,7 @@ server {
     add_header "X-UA-Compatible" "IE=Edge,chrome=1";
 
     # Cache static files for as long as possible
-    location ~* \.(?:xml|ogg|mp3|mp4|ogv|svg|svgz|eot|otf|woff|ttf|css|js|jpg|jpeg|gif|png|ico)$ {
+    location ~* \.(?:ogg|mp3|mp4|ogv|svg|svgz|eot|otf|woff|ttf|css|js|jpg|jpeg|gif|png|ico)$ {
         try_files $uri =404;
         expires max;
         access_log off;
