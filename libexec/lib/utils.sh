@@ -28,6 +28,7 @@ remote_sync () {
 
     local rsync_opts="\
     --recursive \
+    --delete \
     --compress \
     --links \
     --perms \
