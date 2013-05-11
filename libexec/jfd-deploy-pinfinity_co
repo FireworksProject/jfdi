@@ -1,6 +1,6 @@
 #!/bin/bash
-# Usage: jfd deploy-toehold <domain_name>
-# Summary: Deploy the toehold scripts to a remote box.
+# Usage: jfd deploy-pinfinity_co <domain_name>
+# Summary: Deploy the Pinfinity.co website to the remote box.
 # Help: The <domain_name> will probably be 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 
 source "$_JFD_LIB/utils.sh"
