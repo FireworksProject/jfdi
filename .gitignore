@@ -25,5 +25,8 @@ TAGS
 # ISO images which might slip in there
 *.iso
 
+# Devbox soft link to usr/
+virtual_machines/devbox/usr
+
 webapps/***
 !webapps/.gitkeep
