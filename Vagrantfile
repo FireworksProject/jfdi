@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "jfdi"
 
   # Hostname
-  config.vm.hostname = "massive-dev"
+  config.vm.hostname = "massive"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -21,7 +21,6 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network :forwarded_port, guest: 80, host: 8080
-  config.vm.network :public_network
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -30,7 +29,7 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  # config.vm.network :public_network
+  config.vm.network :public_network
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -54,7 +53,6 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you're using for more
   # information on available options.
-
   config.vm.provision :shell, :inline => "/remote/bin/remote setup"
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
