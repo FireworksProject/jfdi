@@ -5,7 +5,7 @@
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
 #   Packages:
-#     toehold
+#     jfd
 
 source "$_JFD_LIB/utils.sh"
 

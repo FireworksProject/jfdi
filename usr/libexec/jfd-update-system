@@ -1,0 +1,16 @@
+#!/bin/bash
+# Usage: jfd update-system
+# Summary: Ubdate the base Ubuntu system.
+# Help: You probably don't want to run this on your local work station. It was
+# designed to run on a VM or remote box.
+
+main () {
+    sudo apt-get update || \
+        fail "Unable to update package repository."
+    sudo apt-get dist-upgrade --assume-yes || \
+        fail "Unable to upgrade the system."
+    sudo apt-get autoremove --assume-yes
+    sudo apt-get autoclean --assume-yes
+}
+
+main $@

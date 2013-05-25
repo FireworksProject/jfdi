@@ -16,6 +16,13 @@ super_or_fail () {
     super_user || fail "Super user priv required $msg"
 }
 
+not_local () {
+    local msg="$1"
+    if ! [ $( hostname | grep massive ) ]; then
+        fail $msg
+    fi
+}
+
 ensure_dir () {
     if ! [ -d "$1" ]; then
         mkdir -p -- "$1" || fail "couldn't create $1"
