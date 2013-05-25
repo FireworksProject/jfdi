@@ -45,6 +45,5 @@ remote_sync () {
     --human-readable \
     --exclude-from=$_JFD_ROOT/configs/rsync-exclude.list
     "
-
     rsync $rsync_opts "$src" "$dest"
 }

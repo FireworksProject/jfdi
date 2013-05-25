@@ -41,17 +41,19 @@ install_ruby () {
         sudo rm -rf /opt/vagrant_ruby
     fi
 
-    if ! [ -d "$RUBYDIR" ]; then
-        ensure_dir "$RUBYDIR"
-        curl -# -L "$url" \
-            | tar xzf - -C "$RUBYDIR" --strip-components=1 \
-            || fail "Could not download RubyGems"
+    if ! [ $(command -v gem) ]; then
+        if ! [ -d "$RUBYDIR" ]; then
+            ensure_dir "$RUBYDIR"
+            curl -# -L "$url" \
+                | tar xzf - -C "$RUBYDIR" --strip-components=1 \
+                || fail "Could not download RubyGems"
+        fi
+
+        cd "$RUBYDIR"
+        sudo ruby setup.rb --no-format-executable
+
+        rm -rf "$RUBYDIR"
     fi
-
-    cd "$RUBYDIR"
-    sudo ruby setup.rb --no-format-executable
-
-    rm -rf "$RUBYDIR"
 }
 
 main $@

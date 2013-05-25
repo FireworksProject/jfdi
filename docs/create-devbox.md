@@ -27,10 +27,24 @@ VBoxGuestAdditions.  Copy the image from one of these locations:
 * On an Ubuntu host, you can find this file at `/usr/share/virtualbox/VBoxGuestAdditions.iso`.
 
 
-### 2) Update the System
-First you need to start the VM and SSH into it:
+### 2) Prep the System
+First you need to start the VM.
 
 	vagrant up
+
+Make a note of the local IP address that it reports on the terminal. You'll
+need that for the next step.
+
+Once the VM is up, you need to deploy some scripts to it. Assuming you're still
+in the base directory for this box (along side the 'Vagrantfile'), you can do
+this by running
+
+	./toehold.sh 192.168.1.128
+
+where '192.168.1.128' should be substitued by the IP address the VM reported to
+you when it booted up. You'll need to put in the vagrant user password at this
+stage, which happens to be 'vagrant'. After that, log into the box with
+
 	vagrant ssh
 
 Once you're in, move the VBoxGuestAdditions.iso to a new location so we don't
@@ -38,11 +52,13 @@ lose it:
 
 	mv /vagrant/VBoxGuestAdditions.iso ~/
 
-and then update the system by running the provided script:
+and then update the system by running the toehold script you uploaded less than
+a minute ago with `tohold.sh`:
 
-	/vagrant/system_dependencies.sh
+	/tmp/usr/bin/jfd bootstrap-server
 
-This will install the Ubuntu system dependencies.
+This will install the Ubuntu system dependencies, including Ruby, RubyGems, and
+Chef.
 
 
 ### 3) Install VBox Guest Additions

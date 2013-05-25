@@ -5,30 +5,10 @@
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
 #   Packages:
+#     toehold
 #     jfd
 
 source "$_JFD_LIB/utils.sh"
-
-rsync_opts="\
---recursive \
---compress \
---links \
---perms \
---times \
---omit-dir-times \
---owner \
---group \
---progress \
---human-readable \
---exclude=*.swp \
---exclude=*.pyc \
---exclude=*.tmproj \
---exclude=.DS_Store \
---exclude=._* \
---exclude=._*/ \
---exclude=TAGS \
---exclude=*.tags \
-"
 
 main () {
 	local package="$1"
@@ -43,7 +23,11 @@ main () {
 	fi
 
 	case "$package" in
+	"toehold" )
+	    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/tmp/"
+		;;
 	"jfd" )
+	    remote_sync "$_JFD_ROOT/" "vagrant@$domain_name:/build/"
 		;;
 	* )
 		echo "Invalid package '$package'. No action taken."
@@ -51,10 +35,6 @@ main () {
 		;;
 	esac
 
-	local src="$_JFD_ROOT"
-	local dest="vagrant@$domain_name:/tmp"
-
-	rsync $rsync_opts "$src" "$dest/"
 }
 
 main $@
