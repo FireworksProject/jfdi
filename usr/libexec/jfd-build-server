@@ -1,0 +1,15 @@
+#!/bin/bash
+# Usage: jfd build-server
+# Summary: Runs the Chef scripts to build the Massive server.
+# Help: You don't want to run this on your local work station. Run it on a VM
+# or remote box.
+
+source "$_JFD_LIB/utils.sh"
+
+build_dir="/home/vagrant/build/"
+
+main () {
+	chef-solo -c "$build_dir/solo.rb" -j "$build_dir/solo.json"
+}
+
+main $@

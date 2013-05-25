@@ -58,14 +58,25 @@ a minute ago with `tohold.sh`:
 	/tmp/usr/bin/jfd bootstrap-server
 
 This will install the Ubuntu system dependencies, including Ruby, RubyGems, and
-Chef.
+Chef. This script will take several minutes to run, and while it does, you
+might be prompted to answer a question or two about the install. Just use the
+default choices and continue on. Once it's done, exit the ssh session.
 
 
 ### 3) Install VBox Guest Additions
-Exit the VM and restart it from the local machine with `vagrant reload`. You'll
-notice that vagrant seems to break at this point. That's because we've updated
-the Ubuntu system, but we have not yet updated VBoxGuestAdditions. So, when the
-machine restarts you'll see this:
+After you've exited the VM and are back on your local terminal, run
+
+	./deploy-build.sh 192.168.128
+
+where, again, '192.168.1.128' is substitued by the IP address the VM reported
+to you when it booted up last time. You'll need to put in the vagrant user
+password again, which happens to be 'vagrant', and you be prompted for it 3
+times.
+
+Then restart the VM with `vagrant reload`. You'll notice that vagrant seems to
+break at this point. That's because we've updated the Ubuntu system, but we
+have not yet updated VBoxGuestAdditions. So, when the machine restarts you'll
+see this:
 
 	The following SSH command responded with a non-zero exit status.
 	Vagrant assumes that this means the command failed!
@@ -90,16 +101,14 @@ OK, because we don't use them.  After it's done, let's remove the iso image:
 	rm ~/VBoxGuestAdditions.iso
 	rmdir ~/vbg
 
-Then, exit the VM.
 
 ### 4) Install Application Dependencies
 Exit the VM and restart it from the local machine again using `vagrant reload`.
-Log back in with `vagrant ssh` and run the update the application dependencies
-by running the provided script:
+Log back in with `vagrant ssh` and then build the server:
 
-	/vagrant/application_dependencies.sh
+	sudo ~/usr/bin/jfd build-server
 
-This will install NGINX and PHP.
+This will install Node.js, CouchDB, NGINX and PHP.
 
 
 ### 5) Package the Box

@@ -26,7 +26,7 @@ main () {
             fail "Unable to create /build directory"
     fi
 
-    sudo chown vagrant:vagrant "/build"
+		ensure_dir "/home/vagrant/build"
 }
 
 main $@

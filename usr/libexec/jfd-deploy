@@ -5,8 +5,8 @@
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
 #   Packages:
-#     toehold
-#     jfd
+#     toehold - Deploy the toehold scripts to /tmp
+#     build   - Deploy the build scripts to /home/build
 
 source "$_JFD_LIB/utils.sh"
 
@@ -26,8 +26,10 @@ main () {
 	"toehold" )
 	    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/tmp/"
 		;;
-	"jfd" )
-	    remote_sync "$_JFD_ROOT/" "vagrant@$domain_name:/build/"
+	"build" )
+	    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/home/vagrant/"
+        remote_sync "$( dirname $_JFD_ROOT )/chef/" "vagrant@$domain_name:/home/vagrant/build/"
+        remote_sync "$( dirname $_JFD_ROOT )/cookbooks" "vagrant@$domain_name:/home/vagrant/build/"
 		;;
 	* )
 		echo "Invalid package '$package'. No action taken."
