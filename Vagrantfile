@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "jfdi"
 
   # Hostname
-  config.vm.hostname = "massive"
+  config.vm.hostname = "massive-dev"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.

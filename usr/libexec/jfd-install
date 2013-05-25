@@ -1,0 +1,14 @@
+#!/bin/bash
+# Usage: jfd install <package_name>
+# Summary: Install a declared package.
+# Help:
+#   package_names:
+#     couchdb
+
+source "$_JFD_LIB/utils.sh"
+
+main () {
+	echo "ok"
+}
+
+main $@
