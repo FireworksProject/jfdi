@@ -3,6 +3,7 @@
 	"recipe[utils::default]",
 	"recipe[nginx::default]",
 	"recipe[php5-fpm::default]",
+	"recipe[couchdb::default]",
 	"recipe[nodejs::default]"
 ]
 }

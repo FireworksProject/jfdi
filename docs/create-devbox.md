@@ -119,6 +119,7 @@ the local IP address of the VM. Use that IP to test the new box with this:
 
 	curl -i http://192.168.1.128
 	curl -i http://192.168.1.128/index.php
+	curl -i http://192.168.1.128:5985
 
 where '192.168.1.128' is the IP address of the VM. For index.php, you should
 see the output of `phpinfo()`.
