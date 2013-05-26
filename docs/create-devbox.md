@@ -64,19 +64,10 @@ default choices and continue on. Once it's done, exit the ssh session.
 
 
 ### 3) Install VBox Guest Additions
-After you've exited the VM and are back on your local terminal, run
-
-	./deploy-build.sh 192.168.128
-
-where, again, '192.168.1.128' is substitued by the IP address the VM reported
-to you when it booted up last time. You'll need to put in the vagrant user
-password again, which happens to be 'vagrant', and you be prompted for it 3
-times.
-
-Then restart the VM with `vagrant reload`. You'll notice that vagrant seems to
-break at this point. That's because we've updated the Ubuntu system, but we
-have not yet updated VBoxGuestAdditions. So, when the machine restarts you'll
-see this:
+After exiting the VM, restart it with `vagrant reload`. You'll notice that
+vagrant seems to break at this point. That's because we've updated the Ubuntu
+system, but we have not yet updated VBoxGuestAdditions. So, when the machine
+restarts you'll see this:
 
 	The following SSH command responded with a non-zero exit status.
 	Vagrant assumes that this means the command failed!
@@ -103,7 +94,16 @@ OK, because we don't use them.  After it's done, let's remove the iso image:
 
 
 ### 4) Install Application Dependencies
-Exit the VM and restart it from the local machine again using `vagrant reload`.
+After you've exited the VM and are back on your local terminal, run
+
+	./deploy-build.sh 192.168.128
+
+where, again, '192.168.1.128' is substitued by the IP address the VM reported
+to you when it booted up last time. You'll need to put in the vagrant user
+password again, which happens to be 'vagrant', and you'll be prompted for it 3
+times.
+
+Restart the VM from the local machine again using `vagrant reload`.
 Log back in with `vagrant ssh` and then build the server:
 
 	sudo ~/usr/bin/jfd build-server
