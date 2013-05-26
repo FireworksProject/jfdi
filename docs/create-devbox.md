@@ -108,14 +108,24 @@ Log back in with `vagrant ssh` and then build the server:
 
 	sudo ~/usr/bin/jfd build-server
 
-This will install Node.js, CouchDB, NGINX and PHP.
+This will install Node.js, CouchDB, NGINX and PHP. After these Chef scripts are
+done running you'll need to restart the box to enjoy your handywork. So, exit the
+VM and run
+
+	vagrant reload
+
+Vagrant will spew a bunch of stuff on your terminal, but one bit is important:
+the local IP address of the VM. Use that IP to test the new box with this:
+
+	curl -i http://192.168.1.128
+	curl -i http://192.168.1.128/index.php
+
+where '192.168.1.128' is the IP address of the VM. For index.php, you should
+see the output of `phpinfo()`.
 
 
 ### 5) Package the Box
 First test the web servers with:
-
-	curl -i http://localhost
-	curl -i http://localhost/info.php
 
 Then packaging the box is pretty simple:
 

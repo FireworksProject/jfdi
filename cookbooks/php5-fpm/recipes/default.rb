@@ -26,4 +26,10 @@ template "/etc/php5/fpm/pool.d/default_nginx.conf" do
   mode 0440
   owner "root"
   group "root"
+  action :create_if_missing
+end
+
+cookbook_file "/usr/share/nginx/html/index.php" do
+  mode 0644
+  action :create_if_missing
 end
