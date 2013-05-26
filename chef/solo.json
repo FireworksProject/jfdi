@@ -1,3 +1,8 @@
 {
-"run_list": ["recipe[nodejs::default]"]
+"run_list": [
+	"recipe[utils::default]",
+	"recipe[nginx::default]",
+	"recipe[php5-fpm::default]",
+	"recipe[nodejs::default]"
+]
 }
