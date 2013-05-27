@@ -34,14 +34,20 @@ template "/etc/nginx/sites-enabled/couchdb" do
   group 'root'
 end
 
+couchdb_configs = {
+  'admins' => node['couch_db']['config']['admins'],
+  'couch_httpd_auth' => node['couch_db']['config']['couch_httpd_auth']
+}
+if node['keys']['couchdb']
+  couchdb_configs['admins'] = node['keys']['couchdb']['admins']
+end
+
 template "/usr/local/etc/couchdb/local.d/admin-users.ini" do
   source "usr/local/etc/couchdb/local.d/admin-users.ini.erb"
   owner "couchdb"
   group "couchdb"
   mode 0660
-  variables(
-    :config => node['keys']['couchdb'] || node['couch_db']['config']
-  )
+  variables :config => couchdb_configs
 end
 
 service "apache2" do
