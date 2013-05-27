@@ -1,5 +1,9 @@
 server {
-    server_name     pinfinity.co www.pinfinity.co pinfinity_co.dev;
+	<% if node['local_box'] %>
+    listen 8003;
+	<% else %>
+    server_name     pinfinity.co www.pinfinity.co;
+	<% end %>
     root            /webapps/pinfinity_co;
     index           index.php;
 
@@ -9,7 +13,9 @@ server {
     # Cache static files for as long as possible
     location ~* \.(?:ogg|mp3|mp4|ogv|svg|svgz|eot|otf|woff|ttf|css|js|jpg|jpeg|gif|png|ico)$ {
         try_files $uri =404;
+	<% if !node['local_box'] %>
         expires max;
+	<% end %>
         access_log off;
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";

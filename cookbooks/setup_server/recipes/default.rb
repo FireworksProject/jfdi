@@ -27,13 +27,6 @@ file "/etc/nginx/sites-enabled/default" do
   action :delete
 end
 
-template "/etc/nginx/sites-enabled/php_fpm" do
-  source "etc/nginx/sites-available/php_fpm.erb"
-  mode 0644
-  owner 'root'
-  group 'root'
-end
-
 template "/etc/nginx/sites-enabled/couchdb" do
   source "etc/nginx/sites-available/couchdb.erb"
   mode 0644

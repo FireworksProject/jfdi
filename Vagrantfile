@@ -53,7 +53,10 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you're using for more
   # information on available options.
   config.vm.provision :chef_solo do |chef|
+    chef.add_recipe "pinfinity_co"
     chef.add_recipe "setup_server"
+
+    chef.json = {'local_box' => true}
   end
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
