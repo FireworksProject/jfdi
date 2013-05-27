@@ -50,6 +50,12 @@ on your path like this:
 
 	sudo ln -s /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
 
+### Keys
+Development on the local VM, as well as deployment on the main server requires
+authentication keys, of course. You should create a `~/.jfdi/` directory in your home
+folder, and in it, you should put a `keys.json` file, which contains all the application
+and remote service keys you need.
+
 
 Applications
 ------------
@@ -78,7 +84,10 @@ used in `chef.add_recipe`.
 
 CouchDB
 -------
-CouchDB is exposed on port 5985.
+CouchDB is exposed on port 5985. Make sure you have the the keys for CouchDB
+set in your .jfdi/keys.json file like this:
+
+	"couchdb": {"admins": {"admin": "some_secret"}}
 
 
 Updating Configurations

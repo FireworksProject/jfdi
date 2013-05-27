@@ -34,6 +34,16 @@ template "/etc/nginx/sites-enabled/couchdb" do
   group 'root'
 end
 
+template "/usr/local/etc/couchdb/local.d/admin-users.ini" do
+  source "usr/local/etc/couchdb/local.d/admin-users.ini.erb"
+  owner "couchdb"
+  group "couchdb"
+  mode 0660
+  variables(
+    :config => node['keys']['couchdb'] || node['couch_db']['config']
+  )
+end
+
 service "apache2" do
   action [:stop, :disable]
 end
