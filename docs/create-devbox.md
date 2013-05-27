@@ -94,7 +94,9 @@ OK, because we don't use them.  After it's done, let's remove the iso image:
 
 
 ### 4) Install Application Dependencies
-After you've exited the VM and are back on your local terminal, run
+After you've exited the VM and are back on your local terminal, restart the VM
+from the local machine again using `vagrant reload`. Then deploy the build
+scripts with
 
 	./deploy-build.sh 192.168.128
 
@@ -103,14 +105,13 @@ to you when it booted up last time. You'll need to put in the vagrant user
 password again, which happens to be 'vagrant', and you'll be prompted for it 3
 times.
 
-Restart the VM from the local machine again using `vagrant reload`.
 Log back in with `vagrant ssh` and then build the server:
 
 	sudo ~/usr/bin/jfd build-server
 
 This will install Node.js, CouchDB, NGINX and PHP. After these Chef scripts are
-done running you'll need to restart the box to enjoy your handywork. So, exit the
-VM and run
+done running you'll need to restart the box to enjoy your handywork. So, exit
+the VM and run
 
 	vagrant reload
 
@@ -122,7 +123,8 @@ the local IP address of the VM. Use that IP to test the new box with this:
 	curl -i http://192.168.1.128:5985
 
 where '192.168.1.128' is the IP address of the VM. For index.php, you should
-see the output of `phpinfo()`.
+see the output of `phpinfo()`. The 5985 port should respond with the "hello
+world" message from CouchDB.
 
 
 ### 5) Package the Box
