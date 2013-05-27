@@ -17,9 +17,10 @@ Technology Stack
 The tech stack for the web development VM is designed for a Digital Ocean VPS.
 
 * Ubuntu Precise 12.04 64bit
-* Nginx 1.2.7
+* Apache CouchDB 1.3.0
+* Nginx 1.4.1
 * PHP 5 and FPM
-* Node.js 0.10.4
+* Node.js 0.10.8
 
 
 Installing the Development Environment
@@ -50,15 +51,34 @@ on your path like this:
 	sudo ln -s /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
 
 
-### Development Hosts
-Since we run multiple virtual hosts on the JFDI server, we use special
-development host names so that each application can be reached via unique host
-names. To take advantage of this, you'll need to edit your `/etc/hosts` file to
-add an entry for each app. This is a sample:
+Applications
+------------
+The JFDI "massive" server is a multi-tenant host serving many different
+applications.
 
-	127.0.0.1	localhost
-	127.0.0.1	pinfinity_co.dev
-	127.0.1.1	backoff
+### Configuring an App for Development
+First, you'll need to setup a softlink from your app to the `webapps/` directory
+in the jfdi repository. So, from the `webapps/` directory, run something like this:
+
+	ln -s pinfinity_co ../../pinfinity_co
+
+Next, the app will need to be added to the `Vagrantfile` in several places. The
+first is an entry to share the folder for your app on the devbox VM:
+
+	config.vm.synced_folder "./webapps/pinfinity_co", "/webapps/pinfinity_co"
+
+The next entry in the Vagrant file is to add your app to the Chef run list:
+
+	chef.add_recipe "pinfinity_co"
+
+The last thing you'll need to do is create a Chef cookbook in the `cookbooks/`
+directory of this repository and make sure the name matches the name you just
+used in `chef.add_recipe`.
+
+
+CouchDB
+-------
+CouchDB is exposed on port 5985.
 
 
 Updating Configurations
