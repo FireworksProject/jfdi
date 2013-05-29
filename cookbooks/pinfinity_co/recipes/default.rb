@@ -12,6 +12,13 @@ template "/etc/php5/fpm/pool.d/pinfinity_co.conf" do
   group 'root'
 end
 
+directory "/var/pinfinity_hub/gallery" do
+  owner 'vagrant'
+  group 'vagrant'
+  mode 0744
+  action :create
+end
+
 service "php5-fpm" do
   action :restart
 end
