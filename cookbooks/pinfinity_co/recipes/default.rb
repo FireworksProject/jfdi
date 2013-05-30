@@ -13,6 +13,7 @@ template "/etc/php5/fpm/pool.d/pinfinity_co.conf" do
 end
 
 directory "/var/pinfinity_hub/gallery" do
+  recursive true
   owner 'vagrant'
   group 'vagrant'
   mode 0744
