@@ -28,6 +28,13 @@ directory "/var/pinfinity_hub/data" do
   action :create
 end
 
+directory "/var/log/pinfinity_hub" do
+  owner 'vagrant'
+  group 'vagrant'
+  mode 0744
+  action :create
+end
+
 service "php5-fpm" do
   action :restart
 end
