@@ -20,6 +20,14 @@ directory "/var/pinfinity_hub/gallery" do
   action :create
 end
 
+directory "/var/pinfinity_hub/data" do
+  recursive true
+  owner 'vagrant'
+  group 'vagrant'
+  mode 0744
+  action :create
+end
+
 service "php5-fpm" do
   action :restart
 end
