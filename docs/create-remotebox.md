@@ -13,8 +13,9 @@ Then add the users:
 	adduser vagrant
 	adduser git
 
-Skip all the other fields during the adduser process by pressing enter at each
-prompt.  Then give the vagrant user sudo privileges.
+Make sure you add the passwords, but skip all the other fields during the
+adduser process by pressing enter at each prompt.  Then give the vagrant user
+sudo privileges.
 
 	adduser vagrant sudo
 
@@ -46,14 +47,35 @@ NOTE: ssh-copy-id is not available on Mac OS X.
 First, deploy the toehold scripts to the remote box from this repository on
 your local workstation.
 
-	bin/jfd deploy-toehold massive-b.fwp-dyn.com
+	./jfd deploy toehold massive-b.fwp-dyn.com
 
 Then ssh into the remote `ssh vagrant@massive-b.fwp-dyn.com` and run the
 install-system script on the remote (you'll need the vagrant password so you can sudo).
 
-	/home/users/vagrant/remote/bin/remote install-system
+	/tmp/usr/bin/jfd bootstrap-server
 
-Once that is done installing, reboot the machine `sudo shutdown -r now`, and
-then ssh back in and run the setup script.
+Once that is done installing, exit and reboot the machine `sudo shutdown -r now`.
 
-	sudo /home/users/vagrant/remote/bin/remote setup
+### 4) Install Application Dependencies
+Starty by deploying the Chef build.
+
+	./jfd deploy build massive-b.fwp-dyn.com
+
+Log back in with `ssh vagrant@massive-b.fwp-dyn.com` and then build the server:
+
+	sudo ~/usr/bin/jfd build-server
+
+This will install Node.js, CouchDB, NGINX and PHP. After these Chef scripts are
+done running you'll need to restart the box to enjoy your handywork.
+
+	sudo shutdown -r now
+
+And then run some tests:
+
+	curl -i http://massive-b.fwp-dyn.com
+	curl -i http://massive-b.fwp-dyn.com/index.php
+	curl -i http://massive-b.fwp-dyn.com:5985
+
+where '192.168.1.128' is the IP address of the VM. For index.php, you should
+see the output of `phpinfo()`. The 5985 port should respond with the "hello
+world" message from CouchDB.
