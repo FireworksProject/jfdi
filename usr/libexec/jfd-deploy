@@ -48,6 +48,12 @@ deploy_pinfinity_co () {
     local domain_name=$1
     local src="$_REPO_ROOT/webapps/pinfinity_co"
     local dest="vagrant@$domain_name:/webapps/pinfinity_co"
+
+    if ! [ -d "$src" ]; then
+        echo "The src directory ($src) is not linked."
+        exit 1
+    fi
+
     echo "From: $src"
     echo "To: $dest"
     remote_sync "$src/" "$dest/"

@@ -79,3 +79,31 @@ And then run some tests:
 where '192.168.1.128' is the IP address of the VM. For index.php, you should
 see the output of `phpinfo()`. The 5985 port should respond with the "hello
 world" message from CouchDB.
+
+### 5) Setup The Server
+First, you need to deploy the secret configuration script:
+
+	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
+
+Then login to the machine with `ssh vagrant@massive-b.fwp-dyn.com` and run the
+setup-server Chef script:
+
+	sudo ~/usr/bin/jfd setup-server
+
+And then restart it again with `sudo shutdown -r now`.
+
+This time, the test results will be different (no more sites-enables/default).
+
+	curl -i http://massive-b.fwp-dyn.com
+	# Results in a 404
+	curl -i http://massive-b.fwp-dyn.com/index.php
+	# Results in a 404
+	curl -i http://massive-b.fwp-dyn.com:5985
+	# Results in a 401
+
+### 6) Install The Applications
+All the applications can be installed from your local workstation with:
+
+	/jfd deploy <package_name> massive-b.fwp-dyn.com
+
+You just have to make sure the package is linked into the `webapps/` directory.
