@@ -36,6 +36,9 @@ main () {
 	"pinfinity_co" )
         deploy_pinfinity_co $domain_name
 		;;
+	"pinfinity_hub" )
+        deploy_pinfinity_hub $domain_name
+		;;
 	* )
 		echo "Invalid package '$package'. No action taken."
 		exit 0
@@ -48,6 +51,21 @@ deploy_pinfinity_co () {
     local domain_name=$1
     local src="$_REPO_ROOT/webapps/pinfinity_co"
     local dest="vagrant@$domain_name:/webapps/pinfinity_co"
+
+    if ! [ -d "$src" ]; then
+        echo "The src directory ($src) is not linked."
+        exit 1
+    fi
+
+    echo "From: $src"
+    echo "To: $dest"
+    remote_sync "$src/" "$dest/"
+}
+
+deploy_pinfinity_hub () {
+    local domain_name=$1
+    local src="$_REPO_ROOT/webapps/pinfinity_hub"
+    local dest="vagrant@$domain_name:/webapps/pinfinity_hub"
 
     if ! [ -d "$src" ]; then
         echo "The src directory ($src) is not linked."

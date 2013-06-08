@@ -7,7 +7,7 @@ echo "Test CouchDB:"
 echo "-------------"
 curl -i "http://$addr:5985"
 echo ""
-echo "* The status should be 200."
+echo "* The status should be 401."
 echo "* The response body should be from CouchDB."
 echo "---"
 

@@ -81,11 +81,14 @@ The last thing you'll need to do is create a Chef cookbook in the `cookbooks/`
 directory of this repository and make sure the name matches the name you just
 used in `chef.add_recipe`.
 
+Lastly, you need to add the Chef recipe and any authentication keys to
+`~/.jfdi/server.json`.
+
 
 CouchDB
 -------
 CouchDB is exposed on port 5985. Make sure you have the the keys for CouchDB
-set in your .jfdi/keys.json file like this:
+set in your .jfdi/server.json file like this:
 
 	"couchdb": {"admins": {"admin": "some_secret"}}
 
@@ -93,15 +96,17 @@ set in your .jfdi/keys.json file like this:
 Updating Configurations
 -----------------------
 Any time there is a change made to the system or application configurations in
-`remote/configs/` the changes will need to be deployed to the local development
-VM as well as the remote servers. To do this on the local VM, simply restart it
-with `vagrant reload`. On the remote machines, you'll need to login and then
-run
+`cookbooks/` the changes will need to be deployed to the local development VM
+as well as the remote servers. To do this on the local VM, simply restart it
+with `vagrant reload`. On the remote machines, you'll need to deploy the Chef
+scripts:
 
-	remote setup
-	sudo service php5-fpm restart
-	sudo service nginx restart
+	./jfd deploy build massive-b.fwp-dyn.com
+	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
 
+Then login and then run:
+
+	sudo ~/usr/bin/jfd setup-server
 
 Updating the Development Base Box
 ---------------------------------
