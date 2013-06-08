@@ -22,6 +22,7 @@ abs_dirname() {
 libexec_path="$(abs_dirname "$0")"
 export _JFD_ROOT="$(abs_dirname "$libexec_path")"
 export _JFD_LIB="$_JFD_ROOT/libexec/lib"
+export _REPO_ROOT="$(abs_dirname "$_JFD_ROOT")"
 export PATH="${libexec_path}:$PATH"
 
 command="$1"

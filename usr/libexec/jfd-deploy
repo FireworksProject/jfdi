@@ -5,8 +5,10 @@
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
 #   Packages:
-#     toehold - Deploy the toehold scripts to /tmp
-#     build   - Deploy the build scripts to /home/build
+#     pinfinity_co  - The www.pinfinity.co website.
+#     pinfinity_hub - The www.pinfinity.co/hub/ webapp.
+#     toehold       - Deploy the toehold scripts to /tmp
+#     build         - Deploy the build scripts to /home/build
 
 source "$_JFD_LIB/utils.sh"
 
@@ -31,12 +33,24 @@ main () {
         remote_sync "$( dirname $_JFD_ROOT )/chef/" "vagrant@$domain_name:/home/vagrant/build/"
         remote_sync "$( dirname $_JFD_ROOT )/cookbooks" "vagrant@$domain_name:/home/vagrant/build/"
 		;;
+	"pinfinity_co" )
+        deploy_pinfinity_co $domain_name
+		;;
 	* )
 		echo "Invalid package '$package'. No action taken."
 		exit 0
 		;;
 	esac
 
+}
+
+deploy_pinfinity_co () {
+    local domain_name=$1
+    local src="$_REPO_ROOT/webapps/pinfinity_co"
+    local dest="vagrant@$domain_name:/webapps/pinfinity_co"
+    echo "From: $src"
+    echo "To: $dest"
+    remote_sync "$src/" "$dest/"
 }
 
 main $@
