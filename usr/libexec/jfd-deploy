@@ -30,8 +30,8 @@ main () {
 		;;
 	"build" )
 	    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/home/vagrant/"
-        remote_sync "$( dirname $_JFD_ROOT )/chef/" "vagrant@$domain_name:/home/vagrant/build/"
-        remote_sync "$( dirname $_JFD_ROOT )/cookbooks" "vagrant@$domain_name:/home/vagrant/build/"
+        remote_sync "$_REPO_ROOT/chef/" "vagrant@$domain_name:/home/vagrant/build/"
+        remote_sync "$_REPO_ROOT/cookbooks" "vagrant@$domain_name:/home/vagrant/build/"
 		;;
 	"pinfinity_co" )
         deploy_pinfinity_co $domain_name
