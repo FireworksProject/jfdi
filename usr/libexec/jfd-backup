@@ -1,0 +1,45 @@
+#!/bin/bash
+# Usage: jfd backup <deployment> <destination> 
+# Summary: Backup the specified deployment to your local box.
+# Help: The <destination> will probably be something like '~/Data/deployment_name/'.
+#   !NOTE: This always pulls from massive.fwp-dyn.com
+#
+#   Deployments:
+#     pinfinity_hub - The www.pinfinity.co/hub/ webapp.
+
+source "$_JFD_LIB/utils.sh"
+
+main () {
+	local deployment="$1"
+	local dest="$2"
+
+	if [ -z $deployment ]; then
+		fail "The <deployment> argument is required."
+	fi
+
+	if [ -z $dest ]; then
+		fail "The <destination> argument is required."
+	fi
+
+	case "$deployment" in
+	"pinfinity_hub" )
+        backup_pinfinity_hub $dest
+		;;
+	* )
+		echo "Invalid deployment name '$deployment'. No action taken."
+		exit 0
+		;;
+	esac
+
+}
+
+backup_pinfinity_hub () {
+    local src="vagrant@massive.fwp-dyn.com:/var/pinfinity_hub/"
+    local dest=$1
+
+    echo "From: $src"
+    echo "To: $dest"
+    remote_sync "$src/" "$dest/"
+}
+
+main $@
