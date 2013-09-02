@@ -75,6 +75,9 @@ deploy_pinfinity_hub () {
     echo "From: $src"
     echo "To: $dest"
     remote_sync "$src/" "$dest/"
+
+    echo ""
+    echo "Remember to log in to the server and restart pinfinity_hub."
 }
 
 main $@
