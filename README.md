@@ -98,7 +98,7 @@ scripts:
 
 Then login and then run:
 
-	sudo ~/usr/bin/jfd setup-server
+	sudo /home/vagrant/usr/bin/jfd setup-server
 
 
 CouchDB
