@@ -39,6 +39,7 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
   config.vm.synced_folder "./webapps/pinfinity_co", "/webapps/pinfinity_co"
   config.vm.synced_folder "./webapps/pinfinity_hub", "/webapps/pinfinity_hub"
+  config.vm.synced_folder "./webapps/htmlandcsstutorial_com", "/webapps/htmlandcsstutorial_com"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -56,6 +57,7 @@ Vagrant.configure("2") do |config|
   # information on available options.
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "pinfinity_co"
+    chef.add_recipe "htmlandcsstutorial_com"
     chef.add_recipe "setup_server"
 
     server_json_path = "#{File.expand_path('~')}/.jfdi/server.json"
