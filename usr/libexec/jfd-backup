@@ -6,6 +6,7 @@
 #
 #   Deployments:
 #     pinfinity_hub - The www.pinfinity.co/hub/ webapp.
+#     tutorial_com  - The htmlandcsstutorial.com website.
 
 source "$_JFD_LIB/utils.sh"
 
@@ -22,6 +23,9 @@ main () {
 	fi
 
 	case "$deployment" in
+	"tutorial_com" )
+        backup_tutorial_com $dest
+		;;
 	"pinfinity_hub" )
         backup_pinfinity_hub $dest
 		;;
@@ -35,6 +39,15 @@ main () {
 
 backup_pinfinity_hub () {
     local src="vagrant@massive.fwp-dyn.com:/var/pinfinity_hub/"
+    local dest=$1
+
+    echo "From: $src"
+    echo "To: $dest"
+    remote_sync "$src/" "$dest/"
+}
+
+backup_tutorial_com () {
+    local src="vagrant@massive.fwp-dyn.com:/var/htmlandcsstutorial_com/"
     local dest=$1
 
     echo "From: $src"
