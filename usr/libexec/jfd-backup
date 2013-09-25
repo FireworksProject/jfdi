@@ -43,7 +43,7 @@ backup_pinfinity_hub () {
 
     echo "From: $src"
     echo "To: $dest"
-    remote_sync "$src/" "$dest/"
+    remote_sync "$src/" "$dest/" --no-delete
 }
 
 backup_tutorial_com () {
@@ -52,7 +52,7 @@ backup_tutorial_com () {
 
     echo "From: $src"
     echo "To: $dest"
-    remote_sync "$src/" "$dest/"
+    remote_sync "$src/" "$dest/" --no-delete
 }
 
 main $@

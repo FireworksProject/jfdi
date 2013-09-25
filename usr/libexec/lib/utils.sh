@@ -32,10 +32,10 @@ ensure_dir () {
 remote_sync () {
     local src=$1
     local dest=$2
+    local no_delete=$3
 
     local rsync_opts="\
     --recursive \
-    --delete \
     --compress \
     --links \
     --perms \
@@ -45,5 +45,8 @@ remote_sync () {
     --human-readable \
     --exclude-from=$_JFD_ROOT/configs/rsync-exclude.list
     "
+    if [ "$no_delete" != "--no-delete" ]; then
+        rsync_opts="--delete $rsync_opts"
+    fi
     rsync $rsync_opts "$src" "$dest"
 }
