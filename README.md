@@ -108,6 +108,9 @@ set in your .jfdi/server.json file like this:
 
 	"couchdb": {"admins": {"admin": "some_secret"}}
 
+If the password is not set in your ~/.jfdi/server.json file, then it will be
+set to 'admin:some_secret_string' by default.
+
 
 Updating the Development Base Box
 ---------------------------------

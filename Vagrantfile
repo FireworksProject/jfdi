@@ -37,9 +37,10 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "./webapps/couchdb_raw", "/webapps/couchdb_raw"
+  config.vm.synced_folder "./webapps/htmlandcsstutorial_com", "/webapps/htmlandcsstutorial_com"
   config.vm.synced_folder "./webapps/pinfinity_co", "/webapps/pinfinity_co"
   config.vm.synced_folder "./webapps/pinfinity_hub", "/webapps/pinfinity_hub"
-  config.vm.synced_folder "./webapps/htmlandcsstutorial_com", "/webapps/htmlandcsstutorial_com"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
