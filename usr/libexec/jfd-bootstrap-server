@@ -1,6 +1,6 @@
 #!/bin/bash
-# Usage: jfd build-devbox
-# Summary: Build the base Vagrant devbox VM.
+# Usage: jfd bootstrap-server
+# Summary: Bootstrap the base box before running chef scripts.
 # Help: You don't want to run this on your local work station. Run it on a VM
 # or remote box.
 
