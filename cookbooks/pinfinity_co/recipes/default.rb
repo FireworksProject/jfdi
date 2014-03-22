@@ -12,30 +12,6 @@ template "/etc/php5/fpm/pool.d/pinfinity_co.conf" do
   group 'root'
 end
 
-directory "/var/pinfinity_hub/gallery" do
-  recursive true
-  owner 'vagrant'
-  group 'vagrant'
-  mode 0744
-  action :create
-end
-
-directory "/var/pinfinity_hub/data" do
-  recursive true
-  owner 'vagrant'
-  group 'vagrant'
-  mode 0744
-  action :create
-end
-
-directory "/var/pinfinity_hub/downloads" do
-  recursive true
-  owner 'vagrant'
-  group 'vagrant'
-  mode 0744
-  action :create
-end
-
 directory "/var/log/pinfinity_hub" do
   owner 'vagrant'
   group 'vagrant'
@@ -43,12 +19,11 @@ directory "/var/log/pinfinity_hub" do
   action :create
 end
 
-# FIXME: This cannot be done with sudo
-# bash "start_pinfinity_hub" do
-#  code <<-EOH
-#  /webapps/pinfinity_hub/bin/restart
-#  EOH
-# end
+bash "start_pinfinity_hub" do
+  code <<-EOH
+  su vagrant /webapps/pinfinity_hub/bin/restart
+  EOH
+end
 
 service "php5-fpm" do
   action :restart
