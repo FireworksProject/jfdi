@@ -7,7 +7,10 @@
 main () {
     sudo apt-get update || \
         fail "Unable to update package repository."
-    sudo apt-get dist-upgrade --assume-yes || \
+
+    # Prevent interactive menus during install
+    # http://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
+    sudo DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --assume-yes || \
         fail "Unable to upgrade the system."
     sudo apt-get autoremove --assume-yes
     sudo apt-get autoclean --assume-yes
