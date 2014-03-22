@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "http://domain.com/path/to/above.box"
-  config.vm.box_url = "https://s3.amazonaws.com/vmboxes/jfdi-2013-05-27.box"
+  config.vm.box_url = "https://s3.amazonaws.com/vmboxes/jfdi-2014-03-21.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -37,7 +37,6 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "./webapps/couchdb_raw", "/webapps/couchdb_raw"
   config.vm.synced_folder "./webapps/htmlandcsstutorial_com", "/webapps/htmlandcsstutorial_com"
   config.vm.synced_folder "./webapps/pinfinity_co", "/webapps/pinfinity_co"
   config.vm.synced_folder "./webapps/pinfinity_hub", "/webapps/pinfinity_hub"
