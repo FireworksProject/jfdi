@@ -31,10 +31,6 @@ service "apache2" do
   action [:stop, :disable]
 end
 
-service "couchdb" do
-  action [:enable, :restart]
-end
-
 service "php5-fpm" do
   action [:enable, :start]
 end
