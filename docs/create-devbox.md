@@ -75,7 +75,7 @@ This will invoke Chef to install Node.js, NGINX, and PHP. You can see the
 recipes listed in `chef/solo.json`. After these Chef scripts are done running
 you'll need to restart the box to enjoy your handywork. So, exit the VM and run
 
-	vagrant reload
+	vagrant reload --provision
 
 Vagrant will spew a bunch of stuff on your terminal, but one bit is important:
 the local IP address of the VM. Use that IP to test the new box with this:
