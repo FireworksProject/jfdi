@@ -9,24 +9,16 @@ source "$_JFD_LIB/utils.sh"
 
 jfd="$_JFD_ROOT/bin/jfd"
 main () {
-    not_local "You probably don't want to run this script on your workstation."
+  not_local "You probably don't want to run this script on your workstation."
 
-    jfd update-system
-    sudo apt-get install build-essential --assume-yes
+  jfd update-system
+  sudo apt-get install build-essential python-software-properties --assume-yes
 
-    jfd install ruby || fail "Unable to install Ruby"
+  jfd install ruby || fail "Unable to install Ruby"
 
-    if ! [ $(command -v chef-solo) ]; then
-        sudo gem install chef --no-ri --no-rdoc || \
-            fail "Unable to install chef."
-    fi
+  jfd install chef || fail "Unable to install Chef"
 
-    if ! [ -d "/build" ]; then
-        sudo mkdir -p -- "/build" ||  \
-            fail "Unable to create /build directory"
-    fi
-
-		ensure_dir "/home/vagrant/build"
+  ensure_dir "/home/vagrant/build"
 }
 
 main $@

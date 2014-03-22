@@ -12,48 +12,38 @@ RUBYDIR=/tmp/ruby_install
 source "$_JFD_LIB/utils.sh"
 
 main () {
-    local package=$1
+  local package=$1
 
-	if [ -z $package ]; then
-		fail "The <package> argument is required."
-	fi
+  if [ -z $package ]; then
+    fail "The <package> argument is required."
+  fi
 
-    case "$package" in
-    "ruby" )
-        install_ruby
-        ;;
-    * )
-        echo "Invalid package '$package'. No action taken."
-        exit 0
-        ;;
-    esac
+  case "$package" in
+  "ruby" )
+    install_ruby
+    ;;
+  "chef" )
+    install_chef
+    ;;
+  * )
+    echo "Invalid package '$package'. No action taken."
+    exit 0
+    ;;
+  esac
 }
 
 install_ruby () {
-    local url="http://rubyforge.org/frs/download.php/76729/rubygems-1.8.25.tgz"
+  # http://brightbox.com/docs/ruby/ubuntu/
+  # python-software-properties must be installed first
+  sudo apt-add-repository --assume-yes ppa:brightbox/ruby-ng
+  sudo apt-get update
+  sudo apt-get install --assume-yes ruby1.9.3
+}
 
-    sudo apt-get install --assume-yes \
-        curl \
-        ruby-full
-
-    # Remove the old Vagrant Ruby
-    if [ -d "/opt/vagrant_ruby" ]; then
-        sudo rm -rf /opt/vagrant_ruby
-    fi
-
-    if ! [ $(command -v gem) ]; then
-        if ! [ -d "$RUBYDIR" ]; then
-            ensure_dir "$RUBYDIR"
-            curl -# -L "$url" \
-                | tar xzf - -C "$RUBYDIR" --strip-components=1 \
-                || fail "Could not download RubyGems"
-        fi
-
-        cd "$RUBYDIR"
-        sudo ruby setup.rb --no-format-executable
-
-        rm -rf "$RUBYDIR"
-    fi
+install_chef () {
+  if ! [ $(command -v chef-solo) ]; then
+    sudo gem install chef --no-ri --no-rdoc || fail "Unable to install chef."
+  fi
 }
 
 main $@

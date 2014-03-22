@@ -2,7 +2,7 @@ package "python-software-properties"
 
 bash "install-nginx-repository" do
   code <<-EOH
-  add-apt-repository ppa:nginx/stable --yes
+  apt-add-repository ppa:nginx/stable --yes
   apt-get update
   EOH
 end
