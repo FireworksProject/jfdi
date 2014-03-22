@@ -1,10 +1,18 @@
 Create a Remote Production Box
 ==============================
 
-### 1) Create Some Users
+### 1) Create a Machine
+Use the Digital Ocean management console to create a bare Ubuntu 12.04 machine.
+* Make sure an SSH key has been uploaded.
+* Use 'massive' as the hostname name.
+* 512MB/20GB box
+* In 'New York 2' region.
+* Ubuntu 12.04 x64 image.
+
+### 2) Create Some Users
 We need a named user that can sudo, and the git user (without sudo privileges).
-Generate or locate the passwords for the 'vagrant' and 'git' users on the local
-workstation.  Then ssh into the remote machine:
+Generate or locate the passwords for the 'vagrant' and 'git' users from your
+password bank on the local workstation.  Then ssh into the remote machine:
 
 	ssh root@massive-b.fwp-dyn.com
 
@@ -20,7 +28,7 @@ sudo privileges.
 	adduser vagrant sudo
 
 
-### 2) SSH Access
+### 3) SSH Access
 Configure SHH access by editing `/etc/ssh/sshd_config` and add or change the
 following lines:
 
@@ -42,7 +50,7 @@ Back on your workstation, you can upload your key like this:
 NOTE: ssh-copy-id is not available on Mac OS X.
 
 
-### 3) Install System Dependencies
+### 4) Install System Dependencies
 
 First, deploy the toehold scripts to the remote box from this repository on
 your local workstation.
@@ -56,7 +64,7 @@ install-system script on the remote (you'll need the vagrant password so you can
 
 Once that is done installing, exit and reboot the machine `sudo shutdown -r now`.
 
-### 4) Install Application Dependencies
+### 5) Install Application Dependencies
 Starty by deploying the Chef build.
 
 	./jfd deploy build massive-b.fwp-dyn.com
@@ -77,7 +85,7 @@ And then run some tests:
 
 For index.php, you should see the output of `phpinfo()`.
 
-### 5) Setup The Server
+### 6) Setup The Server
 First, you need to deploy the secret configuration script:
 
 	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
@@ -98,7 +106,7 @@ This time, the test results will be different (no more sites-enables/default).
 	curl -i http://massive-b.fwp-dyn.com:5985
 	# Results in a 401
 
-### 6) Install The Applications
+### 7) Install The Applications
 All the applications can be installed from your local workstation with:
 
 	/jfd deploy <package_name> massive-b.fwp-dyn.com
