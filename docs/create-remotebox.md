@@ -65,7 +65,7 @@ Log back in with `ssh vagrant@massive-b.fwp-dyn.com` and then build the server:
 
 	sudo ~/usr/bin/jfd build-server
 
-This will install Node.js, CouchDB, NGINX and PHP. After these Chef scripts are
+This will install Node.js, NGINX, and PHP. After these Chef scripts are
 done running you'll need to restart the box to enjoy your handywork.
 
 	sudo shutdown -r now
@@ -74,18 +74,15 @@ And then run some tests:
 
 	curl -i http://massive-b.fwp-dyn.com
 	curl -i http://massive-b.fwp-dyn.com/index.php
-	curl -i http://massive-b.fwp-dyn.com:5985
 
-where '192.168.1.128' is the IP address of the VM. For index.php, you should
-see the output of `phpinfo()`. The 5985 port should respond with the "hello
-world" message from CouchDB.
+For index.php, you should see the output of `phpinfo()`.
 
 ### 5) Setup The Server
 First, you need to deploy the secret configuration script:
 
 	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
 
-Then login to the machine with `ssh vagrant@massive-b.fwp-dyn.com` and run the
+Then log into the machine with `ssh vagrant@massive-b.fwp-dyn.com` and run the
 setup-server Chef script:
 
 	sudo ~/usr/bin/jfd setup-server
