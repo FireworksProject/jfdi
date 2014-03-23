@@ -1,0 +1,41 @@
+#!/bin/bash
+# Usage: jfd test <suite>
+# Summary: Run various test suites.
+# Help: Test suite names are listed below.
+#
+#   Suites:
+#     devserver         - Run tests against the local development VM.
+#     staging_server    - Run tests against the remote massive-b.fwp-dyn.com server.
+#     production_server - Run tests against the remote massive.fwp-dyn.com server.
+
+source "$_JFD_LIB/utils.sh"
+
+TESTS="$_REPO_ROOT/test"
+MOCHA="$_REPO_ROOT/node_modules/.bin/mocha --compilers coffee:coffee-script/register --require $_JFD_LIB/test_helper"
+
+main () {
+  local suite="$1"
+
+  if [ -z $suite ]; then
+    fail "The <suite> argument is required."
+  fi
+
+  case "$suite" in
+  "devserver" )
+     JFD_TEST_ENV=development $MOCHA "$TESTS/server/"
+    ;;
+  "staging_server" )
+     JFD_TEST_ENV=staging $MOCHA "$TESTS/server/"
+    ;;
+  "production_server" )
+     JFD_TEST_ENV=production $MOCHA "$TESTS/server/"
+    ;;
+  * )
+    echo "Invalid suite '$suite'. No action taken."
+    exit 0
+    ;;
+  esac
+
+}
+
+main $@

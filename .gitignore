@@ -16,6 +16,8 @@
 TAGS
 *.tags
 
+node_modules/
+
 # Vagrant state management
 .vagrant
 

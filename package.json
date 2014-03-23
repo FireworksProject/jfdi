@@ -1,0 +1,12 @@
+{
+    "name": "jfdi",
+    "version": "0.1.0",
+    "description": "npm registration for jfdi tools.",
+    "author": "Kris Walker <kris@kixx.name> (http://www.kixx.name/)",
+    "dependencies": {
+        "coffee-script": "1.7.1",
+        "crystal_constants": "1.1.0",
+        "mocha": "1.18.2",
+        "should": "3.1.4"
+    }
+}
