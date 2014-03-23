@@ -9,31 +9,44 @@ Use the Digital Ocean management console to create a bare Ubuntu 12.04 machine.
 * In 'New York 2' region.
 * Ubuntu 12.04 x64 image.
 
-### 2) Create Some Users
-We need a named user that can sudo, and the git user (without sudo privileges).
-Generate or locate the passwords for the 'vagrant' and 'git' users from your
-password bank on the local workstation.  Then ssh into the remote machine:
+### 2) Update the Domain Name
+Grab the IP address off the Digital Ocean control panel and plug it into the
+'massive-b.fwp-dyn.com' subdomain on DynDNS.
 
-	ssh root@massive-b.fwp-dyn.com
+Later, when this box is ready to go, we'll switch the IP address over to
+'massive.fwp-dyn.com'.
 
-Then add the users:
+### 3) Create A User
+We need a named user that can sudo.  Generate or locate the password for the
+'vagrant' user from your password bank on your local workstation.  Then ssh
+into the remote machine:
+
+	ssh -i ~/.ssh/fwp_digitalocean_rsa root@massive-b.fwp-dyn.com
+
+Then add the user:
 
 	adduser vagrant
-	adduser git
 
-Make sure you add the passwords, but skip all the other fields during the
+Make sure you add the password, but skip all the other fields during the
 adduser process by pressing enter at each prompt.  Then give the vagrant user
 sudo privileges.
 
 	adduser vagrant sudo
 
 
-### 3) SSH Access
+### 4) SSH Access
+First, we need to copy the authorized_keys to the vagrant user, so it can login.
+
+	mkdir /home/vagrant/.ssh
+	chmod 700 /home/vagrant/.ssh
+	cp /root/.ssh/authorized_keys /home/vagrant/.ssh/
+	chown -R vagrant:vagrant /home/vagrant/.ssh/
+
 Configure SHH access by editing `/etc/ssh/sshd_config` and add or change the
 following lines:
 
 	PermitRootLogin no
-	AllowUsers vagrant git
+	AllowUsers vagrant
 
 Then exit and restart the machine with:
 
@@ -42,15 +55,12 @@ Then exit and restart the machine with:
 If you screwed something up (like forgetting to add sudo privilages to vagrant
 user) then `PermitRootLogin no` is going to lock you out of the machine.
 
-Back on your workstation, you can upload your key like this:
+On your local machine, make sure you've
 
-	ssh-copy-id -i ~/.ssh/id_rsa vagrant@massive-b.fwp-dyn.com
-	ssh-copy-id -i ~/.ssh/id_rsa git@@massive-b.fwp-dyn.com
-
-NOTE: ssh-copy-id is not available on Mac OS X.
+	ssh-add ~/.ssh/fwp_digitalocean_rsa
 
 
-### 4) Install System Dependencies
+### 5) Install System Dependencies
 
 First, deploy the toehold scripts to the remote box from this repository on
 your local workstation.
@@ -64,8 +74,8 @@ install-system script on the remote (you'll need the vagrant password so you can
 
 Once that is done installing, exit and reboot the machine `sudo shutdown -r now`.
 
-### 5) Install Application Dependencies
-Starty by deploying the Chef build.
+### 6) Install Application Dependencies
+Start by deploying the Chef build.
 
 	./jfd deploy build massive-b.fwp-dyn.com
 
@@ -85,10 +95,15 @@ And then run some tests:
 
 For index.php, you should see the output of `phpinfo()`.
 
-### 6) Setup The Server
+If those requests don't work as expected, try a simple restart first.
+
+### 7) Setup The Server
 First, you need to deploy the secret configuration script:
 
 	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
+
+Any SSL certificates should be copied to the sever and moved to
+`/etc/ssl/`, which should include the `*.crt` and `*.key` files.
 
 Then log into the machine with `ssh vagrant@massive-b.fwp-dyn.com` and run the
 setup-server Chef script:
@@ -100,15 +115,20 @@ And then restart it again with `sudo shutdown -r now`.
 This time, the test results will be different (no more sites-enables/default).
 
 	curl -i http://massive-b.fwp-dyn.com
-	# Results in a 404
+	# Results in a 502 bad gateway
 	curl -i http://massive-b.fwp-dyn.com/index.php
-	# Results in a 404
-	curl -i http://massive-b.fwp-dyn.com:5985
-	# Results in a 401
+	# Results in a 502 bad gateway
 
-### 7) Install The Applications
-All the applications can be installed from your local workstation with:
+### 8) Install The Applications
+All the applications can be installed from your local workstation with the jfd
+deploy script. See `docs/applications.md` for more info.
+
+!GOTCHA - You have to make sure the packages have been fully built and tested
+on your local workstation and are linked into the `webapps/` directory before
+they can be deployed.
 
 	/jfd deploy <package_name> massive-b.fwp-dyn.com
 
-You just have to make sure the package is linked into the `webapps/` directory.
+Then follow the instructions in `/docs/applications.md` to start each
+application.
+

@@ -62,6 +62,10 @@ A good place to get started is to check out the jfd script itself by running
 ### Remote Server
 * All web applications are served from the root `/webapps/` directory.
 * Nginx configs for each app can be found in `/etc/nginx/sites-available/`.
+* Application logs can generally be found in `/var/log/`.
+
+### Chef
+* Chef cookbooks get deployed to `/home/vagrant/build/`.
 
 
 Installing the Development Environment
@@ -98,39 +102,39 @@ manages the hassle of VirtualBox Guest Additions for you:
 
 	vagrant plugin install vagrant-vbguest
 
-### Keys
+### Download and install JFDI
+Clone this repository with git (if you haven't already) and initialize it with
+npm (assuming you've installed Node.js on your local workstation).
+
+	git clone git@github.com:FireworksProject/jfdi.git
+	cd jfdi & npm install
+
+### Keys (application keys and Chef)
 Development on the local VM, as well as deployment on the main server requires
-authentication keys, of course. You should create a `~/.jfdi/` directory in your home
-folder, and in it, you should put a `keys.json` file, which contains all the application
-and remote service keys you need.
+authentication keys, of course. You should create a `~/.jfdi/` directory in
+your home folder, and in it, you should put a `server.json` file, which
+contains all the application and remote service keys you need. You can use the
+`server.example.json` file to get started.
 
 
 Applications
 ------------
-The JFDI "massive" server is a multi-tenant host serving many different
-applications.
+See `docs/applications.md` for more info.
 
-### Configuring an App for Development
-First, you'll need to setup a softlink from your app to the `webapps/` directory
-in the jfdi repository. So, from the `webapps/` directory, run something like this:
 
-	ln -s ../../myapp_com myapp_com
+Logging Into the Remote Server
+------------------------------
+We use an SSH key to log into the remote server, and a domain name pointing to
+the IP address.
 
-Next, the app will need to be added to the `Vagrantfile` in several places. The
-first is an entry to share the folder for your app on the devbox VM:
+	ssh -i ~/.ssh/fwp_digitalocean_rsa vagrant@massive-b.fwp-dyn.com
 
-	config.vm.synced_folder "./webapps/myapp_com", "/webapps/myapp_com"
 
-The next entry in the Vagrant file is to add your app to the Chef run list:
+Testing
+-------
+Run the jfd command help to see what can be tested
 
-	chef.add_recipe "myapp_com"
-
-The next thing you'll need to do is create a Chef cookbook in the `cookbooks/`
-directory of this repository and make sure the name matches the name you just
-used in `chef.add_recipe`.
-
-Lastly, you need to add the Chef recipe and any authentication keys to
-`~/.jfdi/server.json`.
+	./jfd help test
 
 
 Updating Configurations
