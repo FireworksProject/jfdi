@@ -19,12 +19,6 @@ directory "/var/log/pinfinity_hub" do
   action :create
 end
 
-bash "start_pinfinity_hub" do
-  code <<-EOH
-  su vagrant /webapps/pinfinity_hub/bin/restart
-  EOH
-end
-
 service "php5-fpm" do
   action :restart
 end
