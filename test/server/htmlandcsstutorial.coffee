@@ -17,6 +17,7 @@ describe "htmlandcsstutorial.com", ->
 
 
 make_request = HELPER.make_request({
+  protocol: 'https'
   host: 'www.htmlandcsstutorial.com'
   port: 9007
 })
