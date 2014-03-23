@@ -1,4 +1,22 @@
-describe "smoking", ->
+describe "htmlandcsstutorial.com", ->
 
-  it "is not smoking", ->
-    TEST.host.should.eql 'localhost'
+  describe "home page", ->
+
+    before (done) ->
+      req =
+        method: 'GET'
+        path: '/'
+        test: @
+
+      make_request(req, done)
+      return
+
+    it "should have status = 200", ->
+      @response.statusCode.should.eql 200
+      return
+
+
+make_request = HELPER.make_request({
+  host: 'www.htmlandcsstutorial.com'
+  port: 9007
+})
