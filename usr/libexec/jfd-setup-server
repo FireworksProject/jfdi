@@ -1,0 +1,15 @@
+#!/bin/bash
+# Usage: jfd setup-server
+# Summary: Runs the Chef scripts to setup applications on the Massive server.
+# Help: You don't want to run this on your local work station. Run it on a VM
+# or remote box.
+
+build_dir="/home/vagrant/build/"
+
+main () {
+  chef-solo -c "$build_dir/solo.rb" -j "$build_dir/server.json"
+  apt-get autoremove
+  apt-get autoclean
+}
+
+main $@

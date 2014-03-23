@@ -1,0 +1,12 @@
+{
+"local_box": false,
+
+"run_list": [
+	"recipe[setup_server::default]",
+	"recipe[pinfinity_co::default]",
+	"recipe[htmlandcsstutorial_com::default]"
+],
+
+"keys": {
+}
+}
