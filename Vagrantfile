@@ -36,6 +36,9 @@ Vagrant.configure("2") do |config|
   # HTMLandCSSTutorial.com
   config.vm.network :forwarded_port, guest: 8007, host: 9007
 
+  # LazyCrazyAcres.com
+  config.vm.network :forwarded_port, guest: 8011, host: 9011
+
   config.vm.network :public_network
 
   # Share an additional folder to the guest VM. The first argument is
