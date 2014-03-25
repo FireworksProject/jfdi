@@ -4,102 +4,121 @@
 # Help: The <domain_name> will probably be something like '192.168.1.127',
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
-#   Packages:
-#     tutorial_com  - The www.htmlandcsstutorial.com website.
-#     pinfinity_co  - The www.pinfinity.co website.
-#     pinfinity_hub - The www.pinfinity.co/hub/ webapp.
-#     toehold       - Deploy the toehold scripts to /tmp
-#     build         - Deploy the build scripts to /home/build
+# !GOTCHA - Your current working directory should be the project root for
+# webapp deployments, especially WordPress.
+#
+#   Webapps:
+#     tutorial_com   - The www.htmlandcsstutorial.com website.
+#     pinfinity_co   - The www.pinfinity.co website.
+#     pinfinity_hub  - The www.pinfinity.co/hub/ webapp.
+#     lazycrazyacres - The LazyCrazyAcres WordPress site (WordPress).
+#
+#   Scripts:
+#     toehold        - Deploy the toehold scripts to /tmp
+#     build          - Deploy the build scripts to /home/build
 
 source "$_JFD_LIB/utils.sh"
 
 main () {
-	local package="$1"
-	local domain_name="$2"
+  local package="$1"
+  local domain_name="$2"
 
-	if [ -z $package ]; then
-		fail "The <package> argument is required."
-	fi
+  if [ -z $package ]; then
+    fail "The <package> argument is required."
+  fi
 
-	if [ -z $domain_name ]; then
-		fail "The <domain_name> argument is required."
-	fi
+  if [ -z $domain_name ]; then
+    fail "The <domain_name> argument is required."
+  fi
 
-	case "$package" in
-	"toehold" )
-	    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/tmp/"
-		;;
-	"build" )
-	    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/home/vagrant/"
-        remote_sync "$_REPO_ROOT/chef/" "vagrant@$domain_name:/home/vagrant/build/"
-        remote_sync "$_REPO_ROOT/cookbooks" "vagrant@$domain_name:/home/vagrant/build/"
-		;;
-	"tutorial_com" )
-        deploy_tutorial_com $domain_name
-		;;
-	"pinfinity_co" )
-        deploy_pinfinity_co $domain_name
-		;;
-	"pinfinity_hub" )
-        deploy_pinfinity_hub $domain_name
-		;;
-	* )
-		echo "Invalid package '$package'. No action taken."
-		exit 0
-		;;
-	esac
+  case "$package" in
+  "toehold" )
+    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/tmp/"
+    ;;
+  "build" )
+    remote_sync "$_JFD_ROOT" "vagrant@$domain_name:/home/vagrant/"
+    remote_sync "$_REPO_ROOT/chef/" "vagrant@$domain_name:/home/vagrant/build/"
+    remote_sync "$_REPO_ROOT/cookbooks" "vagrant@$domain_name:/home/vagrant/build/"
+    ;;
+  "tutorial_com" )
+    deploy_tutorial_com $domain_name
+    ;;
+  "pinfinity_co" )
+    deploy_pinfinity_co $domain_name
+    ;;
+  "pinfinity_hub" )
+    deploy_pinfinity_hub $domain_name
+    ;;
+  "lazycrazyacres" )
+    deploy_wordpress $domain_name 'lazycrazyacres_com'
+    ;;
+  * )
+    echo "Invalid package '$package'. No action taken."
+    exit 0
+    ;;
+  esac
 
 }
 
 deploy_pinfinity_co () {
-    local domain_name=$1
-    local src="$_REPO_ROOT/webapps/pinfinity_co"
-    local dest="vagrant@$domain_name:/webapps/pinfinity_co"
+  local domain_name=$1
+  local src="$_REPO_ROOT/webapps/pinfinity_co"
+  local dest="vagrant@$domain_name:/webapps/pinfinity_co"
 
-    if ! [ -d "$src" ]; then
-        echo "The src directory ($src) is not linked."
-        exit 1
-    fi
+  if ! [ -d "$src" ]; then
+    echo "The src directory ($src) is not linked."
+    exit 1
+  fi
 
-    echo "From: $src"
-    echo "To: $dest"
-    remote_sync "$src/" "$dest/"
+  echo "From: $src"
+  echo "To: $dest"
+  remote_sync "$src/" "$dest/"
 }
 
 deploy_pinfinity_hub () {
-    local domain_name=$1
-    local src="$_REPO_ROOT/webapps/pinfinity_hub"
-    local dest="vagrant@$domain_name:/webapps/pinfinity_hub"
+  local domain_name=$1
+  local src="$_REPO_ROOT/webapps/pinfinity_hub"
+  local dest="vagrant@$domain_name:/webapps/pinfinity_hub"
 
-    if ! [ -d "$src" ]; then
-        echo "The src directory ($src) is not linked."
-        exit 1
-    fi
+  if ! [ -d "$src" ]; then
+    echo "The src directory ($src) is not linked."
+    exit 1
+  fi
 
-    echo "From: $src"
-    echo "To: $dest"
-    remote_sync "$src/" "$dest/"
+  echo "From: $src"
+  echo "To: $dest"
+  remote_sync "$src/" "$dest/"
 
-    echo ""
-    echo "Remember to log in to the server and restart pinfinity_hub."
+  echo ""
+  echo "Remember to log in to the server and restart pinfinity_hub."
 }
 
 deploy_tutorial_com () {
-    local domain_name=$1
-    local src="$_REPO_ROOT/webapps/htmlandcsstutorial_com"
-    local dest="vagrant@$domain_name:/webapps/htmlandcsstutorial_com"
+  local domain_name=$1
+  local src="$_REPO_ROOT/webapps/htmlandcsstutorial_com"
+  local dest="vagrant@$domain_name:/webapps/htmlandcsstutorial_com"
 
-    if ! [ -d "$src" ]; then
-        echo "The src directory ($src) is not linked."
-        exit 1
-    fi
+  if ! [ -d "$src" ]; then
+    echo "The src directory ($src) is not linked."
+    exit 1
+  fi
 
-    echo "From: $src"
-    echo "To: $dest"
-    remote_sync "$src/" "$dest/"
+  echo "From: $src"
+  echo "To: $dest"
+  remote_sync "$src/" "$dest/"
 
-    echo ""
-    echo "Remember to log in to the server and restart htmlandcsstutorial_com."
+  echo ""
+  echo "Remember to log in to the server and restart htmlandcsstutorial_com."
+}
+
+deploy_wordpress () {
+  local domain_name=$1
+  local src="$(pwd)"
+  local dest="vagrant@$domain_name:/webapps/$2"
+
+  echo "From: $src"
+  echo "To: $dest"
+  remote_sync "$src/" "$dest/" --no-delete "$_JFD_ROOT/configs/wordpress-exclude.list"
 }
 
 main $@

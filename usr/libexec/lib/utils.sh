@@ -33,6 +33,11 @@ remote_sync () {
     local src=$1
     local dest=$2
     local no_delete=$3
+    local exclude_list=$4
+
+    if [ -z $exclude_list ]; then
+        exclude_list="$_JFD_ROOT/configs/rsync-exclude.list"
+    fi
 
     local rsync_opts="\
     --recursive \
@@ -43,7 +48,7 @@ remote_sync () {
     --omit-dir-times \
     --progress \
     --human-readable \
-    --exclude-from=$_JFD_ROOT/configs/rsync-exclude.list
+    --exclude-from=$exclude_list
     "
     if [ "$no_delete" != "--no-delete" ]; then
         rsync_opts="--delete $rsync_opts"
