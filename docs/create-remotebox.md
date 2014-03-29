@@ -33,6 +33,15 @@ sudo privileges.
 
 	adduser vagrant sudo
 
+And then change the configs so the sudo users can sudo without a password:
+
+	sudo visudo
+
+and edit this line to be like this:
+
+	# Allow members of group sudo to execute any command
+	%sudo   ALL=(ALL:ALL) NOPASSWD: ALL
+
 
 ### 4) SSH Access
 First, we need to copy the authorized_keys to the vagrant user, so it can login.

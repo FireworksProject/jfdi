@@ -8,6 +8,25 @@ template "#{home_dir}/.bashrc" do
   group user
 end
 
+template '/etc/mysql_grants.sql' do
+  source 'etc/mysql_grants.sql.erb'
+  owner  'root'
+  group  'root'
+  mode   '0600'
+end
+
+execute 'install-grants' do
+  command "/usr/bin/mysql -u root -p#{node['keys']['mysql']['server_root_password']} < /etc/mysql_grants.sql"
+  action :nothing
+end
+
+template '/etc/mysql/debian.cnf' do
+  source 'etc/mysql/debian.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode '0600'
+end
+
 directory "/webapps" do
   mode 0755
   owner user
@@ -31,11 +50,18 @@ service "apache2" do
   action [:stop, :disable]
 end
 
+service 'mysql' do
+  supports     :status => true, :restart => true, :reload => true
+  action       [:enable, :start]
+end
+
 service "php5-fpm" do
+  supports     :status => true, :restart => true, :reload => true
   action [:enable, :start]
 end
 
 service "nginx" do
+  supports     :status => true, :restart => true, :reload => true
   action [:enable, :restart]
 end
 

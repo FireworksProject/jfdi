@@ -1,12 +1,21 @@
 {
-"local_box": false,
+  "local_box": false,
 
-"run_list": [
-	"recipe[setup_server::default]",
-	"recipe[pinfinity_co::default]",
-	"recipe[htmlandcsstutorial_com::default]"
-],
+  "run_list": [
+    "recipe[setup_server::default]",
+    "recipe[pinfinity_co::default]",
+    "recipe[htmlandcsstutorial_com::default]"
+  ],
 
-"keys": {
-}
+  "keys": {
+    "mysql": {
+      "root": "firesale",
+      "debian": "firesale",
+      "repl": "firesale"
+    }
+  },
+
+  "mysql": {
+    "server": {"socket": "/var/run/mysqld/mysqld.sock"}
+  }
 }
