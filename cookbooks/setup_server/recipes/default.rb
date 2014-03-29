@@ -16,8 +16,7 @@ template '/etc/mysql_grants.sql' do
 end
 
 execute 'install-grants' do
-  command "/usr/bin/mysql -u root -p#{node['keys']['mysql']['server_root_password']} < /etc/mysql_grants.sql"
-  action :nothing
+  command "/usr/bin/mysql -u root -p#{node['keys']['mysql']['old_root']} < /etc/mysql_grants.sql"
 end
 
 template '/etc/mysql/debian.cnf' do
