@@ -1,4 +1,4 @@
-describe "htmlandcsstutorial.com", ->
+describe "lazycrazyacres.com", ->
 
   describe "home page", ->
 
@@ -16,12 +16,12 @@ describe "htmlandcsstutorial.com", ->
       return
 
     it "has a page header", ->
-      @response.body.indexOf('<h2>Kittens Are Dying</h2>').should.be.greaterThan(0)
+      @response.body.indexOf('Welcome to Lazy Crazy Acres</h4>').should.be.greaterThan(0)
       return
 
 
 make_request = HELPER.make_request({
-  protocol: 'https'
-  host: 'www.htmlandcsstutorial.com'
-  port: 9007
+  protocol: 'http'
+  host: 'www.lazycrazyacres.com'
+  port: 9011
 })

@@ -15,6 +15,10 @@ describe "pinfinity.co", ->
       @response.statusCode.should.eql 200
       return
 
+    it "should have an HTML header", ->
+      @response.body.indexOf('<h2 class="light header">A Passion for Medicine, Technology, and Learning</h2>').should.be.greaterThan(0)
+      return
+
     return
 
   describe "Node.js app", ->
