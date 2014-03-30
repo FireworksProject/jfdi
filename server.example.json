@@ -1,21 +1,34 @@
 {
-  "local_box": false,
+  "local_box": true,
 
   "run_list": [
     "recipe[setup_server::default]",
+    "recipe[htmlandcsstutorial_com::default]",
     "recipe[pinfinity_co::default]",
-    "recipe[htmlandcsstutorial_com::default]"
+    "recipe[lazycrazyacres_com::default]"
   ],
 
   "keys": {
     "mysql": {
       "root": "firesale",
       "debian": "firesale",
-      "repl": "firesale"
+      "repl": "firesale",
+      "wordpress": "firesale"
     }
   },
 
   "mysql": {
     "server": {"socket": "/var/run/mysqld/mysqld.sock"}
+  },
+
+  "wordpress": {
+    "AUTH_KEY": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "SECURE_AUTH_KEY": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "LOGGED_IN_KEY": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "NONCE_KEY": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "AUTH_SALT": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "SECURE_AUTH_SALT": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "LOGGED_IN_SALT": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale",
+    "NONCE_SALT": "firesalefiresalefiresalefiresalfiresalefiresalefiresalefiresale"
   }
 }

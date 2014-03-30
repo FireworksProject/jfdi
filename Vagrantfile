@@ -66,14 +66,8 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you're using for more
   # information on available options.
   config.vm.provision :chef_solo do |chef|
-    chef.add_recipe "setup_server"
-    chef.add_recipe "pinfinity_co"
-    chef.add_recipe "htmlandcsstutorial_com"
-
     server_json_path = "#{File.expand_path('~')}/.jfdi/local_server.json"
-    server_json = JSON.parse(File.read(server_json_path))
-
-    chef.json = {'local_box' => true, 'keys' => server_json[:keys]}
+    chef.json = JSON.parse(File.read(server_json_path))
   end
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
