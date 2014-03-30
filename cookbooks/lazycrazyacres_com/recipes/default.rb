@@ -1,3 +1,10 @@
+directory "/webapps/lazycrazyacres_com" do
+  mode 0755
+  owner 'vagrant'
+  group 'vagrant'
+  action :create
+end
+
 template "/etc/nginx/sites-enabled/lazycrazyacres_com" do
   source "etc/nginx/sites-available/lazycrazyacres_com.erb"
   mode 0644

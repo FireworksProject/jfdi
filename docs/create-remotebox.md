@@ -111,6 +111,10 @@ First, you need to deploy the secret configuration script:
 
 	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
 
+!GOTCHA - It's important to not that whenever you run `./jfd deploy build
+massive-b.fwp-dyn.com` or run `~/usr/bin/jfd setup-server` it will destroy
+`server.json`.
+
 Any SSL certificates should be copied to the sever and moved to
 `/etc/ssl/`, which should include the `*.crt` and `*.key` files.
 

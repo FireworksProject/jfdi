@@ -4,9 +4,6 @@
 # Help: The <domain_name> will probably be something like '192.168.1.127',
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
-# !GOTCHA - Your current working directory should be the project root for
-# webapp deployments, especially WordPress.
-#
 #   Webapps:
 #     tutorial_com   - The www.htmlandcsstutorial.com website.
 #     pinfinity_co   - The www.pinfinity.co website.
@@ -113,7 +110,7 @@ deploy_tutorial_com () {
 
 deploy_wordpress () {
   local domain_name=$1
-  local src="$(pwd)"
+  local src="$_REPO_ROOT/webapps/$2"
   local dest="vagrant@$domain_name:/webapps/$2"
 
   echo "From: $src"
