@@ -1,6 +1,6 @@
 {
     "name": "jfdi",
-    "version": "0.1.0",
+    "private": true,
     "description": "npm registration for jfdi tools.",
     "author": "Kris Walker <kris@kixx.name> (http://www.kixx.name/)",
     "dependencies": {
