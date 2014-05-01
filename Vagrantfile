@@ -39,6 +39,9 @@ Vagrant.configure("2") do |config|
   # LazyCrazyAcres.com
   config.vm.network :forwarded_port, guest: 8011, host: 9011
 
+  # kixx.name
+  config.vm.network :forwarded_port, guest: 8012, host: 9012
+
   config.vm.network :public_network
 
   # Share an additional folder to the guest VM. The first argument is
@@ -46,6 +49,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "./webapps/kixx_name", "/webapps/kixx_name"
   config.vm.synced_folder "./webapps/htmlandcsstutorial_com", "/webapps/htmlandcsstutorial_com"
   config.vm.synced_folder "./webapps/pinfinity_co", "/webapps/pinfinity_co"
   config.vm.synced_folder "./webapps/pinfinity_hub", "/webapps/pinfinity_hub"
