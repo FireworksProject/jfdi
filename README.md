@@ -142,8 +142,7 @@ Updating Configurations
 Any time there is a change made to the system or application configurations in
 `cookbooks/` the changes will need to be deployed to the local development VM
 as well as the remote servers. To do this on the local VM, simply restart it
-with `vagrant reload`. On the remote machines, you'll need to deploy the Chef
-scripts:
+with `vagrant reload --provision`. On the remote machines, you'll need to deploy the Chef scripts:
 
 	./jfd deploy build massive-b.fwp-dyn.com
 	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/

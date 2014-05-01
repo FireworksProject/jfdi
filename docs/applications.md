@@ -14,16 +14,15 @@ first is an entry to share the folder for your app on the devbox VM:
 
 	config.vm.synced_folder "./webapps/myapp_com", "/webapps/myapp_com"
 
-The next entry in the Vagrant file is to add your app to the Chef run list:
+Decide on a port number and add the app to the forwarded ports:
 
-	chef.add_recipe "myapp_com"
+	config.vm.network :forwarded_port, guest: 8012, host: 8012
 
 The next thing you'll need to do is create a Chef cookbook in the `cookbooks/`
-directory of this repository and make sure the name matches the name you just
-used in `chef.add_recipe`.
+directory.
 
 Lastly, you need to add the Chef recipe and any authentication keys to
-`~/.jfdi/server.json`.
+`~/.jfdi/local_server.json` and `~/.jfdi/server.json`.
 
 
 ## Application Specific Instructions
