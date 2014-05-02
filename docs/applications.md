@@ -27,6 +27,18 @@ Lastly, you need to add the Chef recipe and any authentication keys to
 
 ## Application Specific Instructions
 
+### Kixx.name
+To deploy the app:
+
+	./jfdi deploy kixx_name <hostname>
+
+To start the app:
+
+	cd /webapps/kixx_name/
+	bin/rstart
+
+Logs will go to /var/log/kixx_name/.
+
 ### HTMLandCSSTutorial.com
 The SSL certificate htmlandcsstutorial.crt and htmlandcsstutorial.key need to
 be copied to the server in `/etc/ssl/`.
@@ -34,8 +46,6 @@ be copied to the server in `/etc/ssl/`.
 To deploy the app:
 
 	./jfd deploy tutorial_com <hostname>
-
-where `<hostname>` is massive-b.fwp-dyn.com or massive.fwp-dyn.com
 
 To start the app:
 

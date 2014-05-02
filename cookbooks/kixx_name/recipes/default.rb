@@ -5,6 +5,13 @@ template "/etc/nginx/sites-enabled/kixx_name" do
   group 'root'
 end
 
+directory "/var/log/kixx_name" do
+  owner 'vagrant'
+  group 'vagrant'
+  mode 0744
+  action :create
+end
+
 service "nginx" do
   action :restart
 end
