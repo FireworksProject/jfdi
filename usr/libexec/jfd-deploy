@@ -5,6 +5,7 @@
 # 'massive.fwp-dyn.com' or 'massive-b.fwp-dyn.com'.
 #
 #   Webapps:
+#     kixx_name      - The www.kixx.name website.
 #     tutorial_com   - The www.htmlandcsstutorial.com website.
 #     pinfinity_co   - The www.pinfinity.co website.
 #     pinfinity_hub  - The www.pinfinity.co/hub/ webapp.
@@ -40,6 +41,9 @@ main () {
   "tutorial_com" )
     deploy_tutorial_com $domain_name
     ;;
+  "kixx_name" )
+    deploy_kixx_name $domain_name
+    ;;
   "pinfinity_co" )
     deploy_pinfinity_co $domain_name
     ;;
@@ -55,6 +59,24 @@ main () {
     ;;
   esac
 
+}
+
+deploy_kixx_name () {
+  local domain_name=$1
+  local src="$_REPO_ROOT/webapps/kixx_name"
+  local dest="vagrant@$domain_name:/webapps/kixx_name"
+
+  if ! [ -d "$src" ]; then
+    echo "The src directory ($src) is not linked."
+    exit 1
+  fi
+
+  echo "From: $src"
+  echo "To: $dest"
+  remote_sync "$src/" "$dest/"
+
+  echo ""
+  echo "Remember to log in to the server and restart /webapps/kixx_name."
 }
 
 deploy_pinfinity_co () {
