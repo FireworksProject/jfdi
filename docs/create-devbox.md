@@ -25,9 +25,7 @@ upping the machine for the first time.
 	vagrant up
 
 Make a note of the local IP address that it reports on the terminal. You'll
-need that for the next step. The IP address is simply echoed out by our very simple
-provisioning script triggered in the Vagrantfile, and should show up in green.
-You can force this to happen any time by add the `--provision` flag:
+need that for the next step. The IP address is simply echoed out by our very simple provisioning script triggered in the Vagrantfile, and should show up in green. You can force this to happen any time by add the `--provision` flag:
 
 	vagrant up --provision
 
@@ -92,11 +90,9 @@ Packaging the box is pretty simple:
 
 	vagrant package -o ~/jfdi-YYYY-MM-DD.box
 
-Run that command from within the `virtual_machines/devbox/` directory.
-When it's done packaging the box, upload it to Amazon S3.
+Run that command from within the `virtual_machines/devbox/` directory. When it's done packaging the box, upload it to Amazon S3.
 
-!Make sure to update the box URL in the main jfdi Vagrantfile and destroy and remove
-the deprecated box.
+!Make sure to update the box URL in the main jfdi Vagrantfile and destroy and remove the deprecated box.
 
 	vagrant box list
 	vagrant box remove
