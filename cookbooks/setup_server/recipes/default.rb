@@ -47,6 +47,11 @@ file "/etc/nginx/sites-enabled/default" do
   action :delete
 end
 
+# Remove the default PHP FPM file.
+file "/etc/php5/fpm/pool.d/www.conf" do
+  action :delete
+end
+
 service "apache2" do
   action [:stop, :disable]
 end
