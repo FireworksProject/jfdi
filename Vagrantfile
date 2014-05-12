@@ -42,6 +42,9 @@ Vagrant.configure("2") do |config|
   # kixx.name
   config.vm.network :forwarded_port, guest: 8012, host: 9012
 
+  # Generic WordPress site
+  config.vm.network :forwarded_port, guest: 8015, host: 9015
+
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
@@ -52,6 +55,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./webapps/pinfinity_co", "/webapps/pinfinity_co"
   config.vm.synced_folder "./webapps/pinfinity_hub", "/webapps/pinfinity_hub"
   config.vm.synced_folder "./webapps/lazycrazyacres_com", "/webapps/lazycrazyacres_com"
+  config.vm.synced_folder "./webapps/wordpress_site", "/webapps/wordpress_site"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -64,6 +68,11 @@ Vagrant.configure("2") do |config|
   #   # Use VBoxManage to customize the VM. For example to change memory:
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   # end
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 512
+    v.cpus = 1
+  end
+
   #
   # View the documentation for the provider you're using for more
   # information on available options.
