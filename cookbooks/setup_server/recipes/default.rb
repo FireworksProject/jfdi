@@ -17,6 +17,7 @@ template '/etc/mysql_grants.sql' do
 end
 
 execute 'install-grants' do
+  sleep(7)
   command "/usr/bin/mysql -u root -p#{node['keys']['mysql']['root']} < /etc/mysql_grants.sql"
   action :nothing
 end
