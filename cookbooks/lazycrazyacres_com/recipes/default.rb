@@ -28,9 +28,10 @@ template '/etc/lazycrazyacres_mysql_grants.sql' do
 end
 
 execute 'install-lazycrazyacres-grants' do
-  sleep(7)
   command "/usr/bin/mysql -u root -p#{node['keys']['mysql']['root']} < /etc/lazycrazyacres_mysql_grants.sql"
   action :nothing
+  retry_delay 5
+  retries 3
 end
 
 template "/webapps/lazycrazyacres_com/wp-config.php" do
