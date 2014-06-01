@@ -111,7 +111,7 @@ First, you need to deploy the secret configuration script:
 
 	scp ~/.jfdi/server.json vagrant@massive-b.fwp-dyn.com:~/build/
 
-!GOTCHA - It's important to not that whenever you run `./jfd deploy build
+!GOTCHA - It's important to note that whenever you run `./jfd deploy build
 massive-b.fwp-dyn.com` or run `~/usr/bin/jfd setup-server` it will destroy
 `server.json`.
 
@@ -125,7 +125,7 @@ setup-server Chef script:
 
 And then restart it again with `sudo shutdown -r now`.
 
-This time, the test results will be different (no more sites-enables/default).
+This time, the test results will be different (no more sites-enabled/default).
 
 	curl -i http://massive-b.fwp-dyn.com
 	# Results in a 502 bad gateway
