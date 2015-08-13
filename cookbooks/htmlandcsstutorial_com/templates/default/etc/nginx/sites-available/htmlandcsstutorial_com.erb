@@ -1,8 +1,8 @@
 <% unless node['local_box'] %>
 server {
-	listen 80;
+	listen 443;
 	server_name		htmlandcsstutorial.com www.htmlandcsstutorial.com;
-	return 301 https://$host$request_uri;
+	return 301 http://$host$request_uri;
 }
 <% end %>
 
@@ -10,11 +10,7 @@ server {
 	<% if node['local_box'] %>
 	listen 8007;
 	<% else %>
-	listen 443;
 	server_name		htmlandcsstutorial.com www.htmlandcsstutorial.com;
-	ssl on;
-	ssl_certificate /etc/ssl/htmlandcsstutorial.crt;
-	ssl_certificate_key /etc/ssl/htmlandcsstutorial.key;
 	<% end %>
 	root			/webapps/htmlandcsstutorial_com;
 	index			index.html;
