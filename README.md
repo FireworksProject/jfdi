@@ -33,20 +33,15 @@ applications running on the massive server.
 
 ### Development Server
 We also have a development server configuration used for, well, development and
-testing.  Vagrant and VirtualBox make it easy to build a maintain vertual
+testing.  Vagrant and VirtualBox make it easy to build a maintain virtual
 machines that can easily be hosted on any workstation or laptop.
-
-Using Vagrant we create a base box, which is hosted remotely. By periodically
-rebuilding this base box to keep it up to date, we can cheaply build and
-destroy our local copies during development and testing without having to worry
-about taking the time to build another one locally.
 
 
 Technology Stack
 ----------------
-The tech stack for the web development VM is designed for a Digital Ocean VPS.
+The tech stack for the web development VM is designed for a [Digital Ocean VPS](https://www.digitalocean.com/company/blog/announcing-the-release-of-our-ubuntu-1404LTS-image/) and also [Heroku Cedar 14](https://devcenter.heroku.com/articles/cedar).
 
-* Ubuntu Precise 12.04 64bit
+* Ubuntu Precise 14.04 64bit
 * Nginx 1.4.1
 * PHP 5 and FPM
 * Node.js 0.10.26
@@ -70,12 +65,7 @@ A good place to get started is to check out the jfd script itself by running
 
 Installing the Development Environment
 --------------------------------------
-We're using Vagrant to manage virtual machines running on VirtualBox. We have a
-base box (VM image) that is preconfigured with all dependencies and will
-automatically be downloaded and installed the first time you spin up the
-machine.
-
-All you need to do is install VirtualBox and Vagrant (make sure you also get
+You'll need to install VirtualBox and Vagrant (make sure you also get
 the vagrant-vbguest plugin -- instructions below):
 
 ### VirtualBox
@@ -168,6 +158,6 @@ the production machines up to date as well. To do that, check out the docs avail
 
 Copyright and License
 ---------------------
-Copyright: (c) 2013 by The Fireworks Project (http://www.fireworksproject.com)
+Copyright: (c) 2013 - 2015 by The Fireworks Project (http://www.fireworksproject.com)
 
 Unless otherwise indicated, all source code is licensed under the MIT license. See LICENSE for details.
