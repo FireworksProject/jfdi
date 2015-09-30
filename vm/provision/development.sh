@@ -37,36 +37,52 @@ echo "Adding PPA repositories"
 echo "************************************************************"
 sudo apt-get install python-software-properties
 
-# Oracle Java is required for Elastisearch
-sudo add-apt-repository --yes ppa:webupd8team/java
-
 # MongoDB
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | \
   sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+
+# PostgreSQL
+echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+wget -q -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+# Redis
+sudo apt-add-repository -y ppa:chris-lea/redis-server
 
 sudo apt-get update
 
 echo "************************************************************"
 echo "Installing Java"
 echo "************************************************************"
-debconf shared/accepted-oracle-license-v1-1 select true | \
-  sudo debconf-set-selections
-debconf shared/accepted-oracle-license-v1-1 seen true | \
-  sudo debconf-set-selections
-sudo apt-get install --assume-yes oracle-java8-installer
+sudo apt-get install --assume-yes default-jre
 
 echo "************************************************************"
-echo "Installing Node.js"
+echo "Installing nvm (Node Version Manager for Node.js)"
 echo "************************************************************"
-wget -q -O - https://raw.githubusercontent.com/creationix/nvm/v0.27.1/install.sh | bash
-. /home/vagrant/.nvm/nvm.sh
-nvm install "$node_version"
+# We have to jump through some user management hoops to get this to work since
+# this script is run as root.
+sudo su vagrant -c "wget -q -O - https://raw.githubusercontent.com/creationix/nvm/v0.27.1/install.sh | bash"
+
+echo "************************************************************"
+echo "Installing Redis"
+echo "************************************************************"
+sudo apt-get install --assume-yes redis-server
+
+echo "************************************************************"
+echo "Installing PostgreSQL"
+echo "************************************************************"
+sudo apt-get install --assume-yes \
+  postgresql-9.3 \
+  postgresql-client-9.3 \
+  postgresql-contrib-9.3 \
+  postgresql-common \
+  postgresql-server-dev-9.3 \
+  libpq-dev
 
 echo "************************************************************"
 echo "Installing Elastisearch"
 echo "************************************************************"
-wget "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-$elasticsearch_version.deb"
+wget -q "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-$elasticsearch_version.deb"
 sudo dpkg -i "elasticsearch-$elasticsearch_version.deb"
 rm "elasticsearch-$elasticsearch_version.deb"
 # To test it all worked:
@@ -85,6 +101,26 @@ echo "Cleaning up"
 echo "************************************************************"
 sudo apt-get autoremove --assume-yes
 sudo apt-get autoclean --assume-yes
+
+echo "************************************************************"
+echo "Configure the PG User"
+echo "************************************************************"
+sudo -E -u postgres psql -c "alter user postgres with password 'postgres';"
+sudo -E -u postgres psql -f /vagrant/vm/configs/development/create_pg_role.sql
+
+# Change PG authentication to md5 instead of peer
+echo "Postgres username: vagrant password: rootdev"
+echo "local   all             postgres                                md5
+local   all             all                                     md5
+host    all             all             0.0.0.0/0               md5
+host    all             all             ::1/128                 md5" \
+ | sudo tee /etc/postgresql/9.3/main/pg_hba.conf
+
+# Allow external connections to PG
+echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/9.3/main/postgresql.conf
+
+# Restart
+sudo /etc/init.d/postgresql restart
 
 echo "************************************************************"
 echo "Installing .bashrc"
