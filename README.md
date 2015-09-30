@@ -34,14 +34,29 @@ The tech stack for the web development VM is designed for a Digital Ocean VPS.
 
 Where to Find Everything
 ------------------------
-### Locally
 A good place to get started is to check out the jfd script itself by running
 
 	./jfd help
 
+### Node.js
+Node.js and npm are installed and managed with [nvm](https://github.com/creationix/nvm). The Vagrant provision script installs nvm, but does not install any node versions. You'll need to do this with `nvm install stable`.
+
+### Redis
+Redis is installed and should be running.
+
+### PostgreSQL
+PostgreSQL is installed and running with user: vagrant, pwd: rootdev. No databases have been created. You'll need to create them yourself.
+
+### Elastisearch
+Elastisearch is installed, but is not running by default. You'll need to start it with `sudo /etc/init.d/elastisearch start`. It can be tested by calling `curl http://localhost:9200`.
+
+### MongoDB
+MongoDB is installed and running.
+
+
 Installing the Development Environment
 --------------------------------------
-You'll need to install Node.js, VirtualBox, and Vagrant (make sure you also get
+You'll need to install VirtualBox, and Vagrant (make sure you also get
 the vagrant-vbguest plugin -- instructions below):
 
 ### VirtualBox
