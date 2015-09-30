@@ -27,5 +27,5 @@ node_modules/
 # ISO images which might slip in there
 *.iso
 
-webapps/***
-!webapps/.gitkeep
+apps/***
+!pps/.gitkeep
