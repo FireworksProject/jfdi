@@ -18,12 +18,6 @@ possible, nicknamed 'massive' server. Our main host for that machine is
 currently DigitalOcean. Although, we'd like to be able to spin up the machine
 on other hosts as well, for redundency.
 
-After spinning up the 'droplet' on Digital Ocean, we bootstrap the machine with some shell scripts. After that, a Chef run takes care of the rest.
-
-Chef is also used to setup the applications the server is responsible for.
-After setup, application specific scripts are used to deploy and maintain the
-applications running on the massive server.
-
 ### Development Server
 We also have a development server configuration used for development and
 testing.  Vagrant and VirtualBox make it easy to build a maintain virtual
@@ -34,9 +28,9 @@ Technology Stack
 The tech stack for the web development VM is designed for a Digital Ocean VPS.
 
 * Ubuntu Trusty 14.04 64bit
+* Node.js 0.12.x
 * Nginx 1.4.1
 * PHP 5 and FPM
-* Node.js 0.12.x
 
 Where to Find Everything
 ------------------------
@@ -44,14 +38,6 @@ Where to Find Everything
 A good place to get started is to check out the jfd script itself by running
 
 	./jfd help
-
-### Remote Server
-* All web applications are served from the root `/webapps/` directory.
-* Nginx configs for each app can be found in `/etc/nginx/sites-available/`.
-* Application logs can generally be found in `/var/log/`.
-
-### Chef
-* Chef cookbooks get deployed to `/home/vagrant/build/`.
 
 Installing the Development Environment
 --------------------------------------
@@ -81,14 +67,6 @@ plugin](https://github.com/dotless-de/vagrant-vbguest) for vagrant, which
 manages the hassle of VirtualBox Guest Additions for you:
 
 	vagrant plugin install vagrant-vbguest
-
-### Download and install JFDI
-Clone this repository with git (if you haven't already) and initialize it with
-npm (assuming you've installed Node.js on your local workstation).
-
-	git clone git@github.com:FireworksProject/jfdi.git
-	cd jfdi
-	npm install
 
 
 Copyright and License
