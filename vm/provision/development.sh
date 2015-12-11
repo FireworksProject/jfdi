@@ -57,13 +57,6 @@ echo "************************************************************"
 sudo apt-get install --assume-yes default-jre
 
 echo "************************************************************"
-echo "Installing nvm (Node Version Manager for Node.js)"
-echo "************************************************************"
-# We have to jump through some user management hoops to get this to work since
-# this script is run as root.
-sudo su vagrant -c "wget -q -O - https://raw.githubusercontent.com/creationix/nvm/v0.27.1/install.sh | bash"
-
-echo "************************************************************"
 echo "Installing Redis"
 echo "************************************************************"
 sudo apt-get install --assume-yes redis-server
@@ -127,3 +120,13 @@ echo "Installing .bashrc"
 echo "************************************************************"
 cp /vagrant/vm/configs/development/.bashrc /home/vagrant/.bashrc
 sudo chown vagrant:vagrant /home/vagrant/.bashrc
+
+echo "************************************************************"
+echo "Install (Node Version Manager for Node.js)"
+echo "************************************************************"
+# We have to jump through some user management hoops to get this to work since
+# this script is run as root.
+# sudo su vagrant -c "wget -q -O - https://raw.githubusercontent.com/creationix/nvm/v0.27.1/install.sh | bash"
+#
+# Instead of doing that, install manually with:
+# curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
