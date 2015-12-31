@@ -27,5 +27,10 @@ node_modules/
 # ISO images which might slip in there
 *.iso
 
+.bundle
+
+# Temp stuff for the VM
+tmp
+
 apps/***
 !pps/.gitkeep
