@@ -27,5 +27,8 @@ node_modules/
 # ISO images which might slip in there
 *.iso
 
+# A tmp directory for stashing stuff
+tmp
+
 apps/***
 !pps/.gitkeep
