@@ -27,6 +27,7 @@ sudo apt-get install --assume-yes \
   wget \
   vim \
   tree \
+  unzip \
   htop
 
 sudo apt-get autoremove --assume-yes

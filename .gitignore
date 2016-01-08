@@ -27,7 +27,9 @@ node_modules/
 # ISO images which might slip in there
 *.iso
 
-# A tmp directory for stashing stuff
+.bundle
+
+# Temp stuff for the VM
 tmp
 
 apps/***
